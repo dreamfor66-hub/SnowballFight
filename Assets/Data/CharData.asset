@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57cdff5f87ad02c40aae414e69d4d296, type: 3}
+  m_Name: CharData
+  m_EditorClassIdentifier: 
+  MaxHp: 100
+  MoveSpd: 7
+  DashCooldown: 5
+  DashSpd: 10
+  DashDur: 0.7
+  DashMoveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.99970245
+      inSlope: -0.079483904
+      outSlope: -0.079483904
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.13409758
+    - serializedVersion: 3
+      time: 0.09157727
+      value: 1.5104413
+      inSlope: -0.031567942
+      outSlope: -0.031567942
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.19911174
+      value: 0.9857377
+      inSlope: -0.19861694
+      outSlope: -0.19861694
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.37376547
+      value: 0.8928161
+      inSlope: -0.96919894
+      outSlope: -0.96919894
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.12630332
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5865896
+      value: 0.490198
+      inSlope: -2.0378835
+      outSlope: -2.0378835
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7083931
+      value: 0.4995799
+      inSlope: 0.032535024
+      outSlope: 0.032535024
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.49609375
+      inSlope: -0.018466655
+      outSlope: -0.018466655
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.21924199
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  AttackPrefs: {fileID: 4227997841550773922, guid: baf83a8d2db1eeb4cace07ec17c5b621, type: 3}
+  AttackCooldown: 0.5
+  AttackSpd: 14
+  AttackDur: 1
