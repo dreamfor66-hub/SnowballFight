@@ -46,7 +46,7 @@ namespace SBF.Network
         {
             SceneManager.LoadScene(0);
         }
-        
+
 
         public override void OnPlayerEnteredRoom(Player other)
         {
@@ -55,8 +55,10 @@ namespace SBF.Network
             if (PhotonNetwork.IsMasterClient)
             {
                 Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
+
                 LoadArena();
             }
+
 
         }
 
@@ -67,16 +69,17 @@ namespace SBF.Network
             if (PhotonNetwork.IsMasterClient)
             {
                 Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
+
                 LoadArena();
             }
         }
 
 
-        #endregion
+            #endregion
 
-        #region Public Methods
+            #region Public Methods
 
-        public void LeaveRoom()
+            public void LeaveRoom()
         {
             PhotonNetwork.LeaveRoom();
         }
@@ -88,8 +91,8 @@ namespace SBF.Network
                 Debug.LogError("PhotonNetwork :마스터 클라이언트는 아니지만 씬을 로드하려고 시도하는 중");
                 return;
             }
-            Debug.LogFormat("MainGameScene");
-            SceneManager.LoadScene(1);
+            Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
+            PhotonNetwork.LoadLevel("Room for " + PhotonNetwork.CurrentRoom.PlayerCount);
         }
 
 

@@ -81,13 +81,14 @@ namespace SBF.Network
         public override void OnJoinedRoom()
         {
             Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. 클라 방에 들어감");
-            if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
             {
                 Debug.Log("We load the 'MainGameScene' ");
 
                 // #Critical
                 // Load the Room Level.
-                SceneManager.LoadScene(1);
+                //SceneManager.LoadScene(1);
+                PhotonNetwork.LoadLevel("Room for 1");
 
             }
         }
