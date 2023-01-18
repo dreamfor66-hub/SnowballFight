@@ -89,7 +89,10 @@ namespace SBF.UI
             {
                 //targetPosition = targetTransform.position;
                 //targetPosition.y += characterControllerHeight;
-                transform.position = Camera.main.WorldToScreenPoint(target.gameObject.transform.position) + screenOffset;
+                if (target.cam != null)
+                {
+                    transform.position = target.GetComponent<PlayerController>().cam.WorldToScreenPoint(target.gameObject.transform.position) + screenOffset;
+                }
             }
         }
         #endregion

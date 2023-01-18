@@ -19,7 +19,7 @@ namespace SBF.UI
         // Start is called before the first frame update
         void Awake()
         {
-            Cursor.lockState = CursorLockMode.Confined;
+            //Cursor.lockState = CursorLockMode.Confined;
             endTrigger = true;
             menuPanel.SetActive(false);
             endPanel.SetActive(false);
@@ -37,16 +37,6 @@ namespace SBF.UI
             //        endPanel.SetActive(true);
             //    }
             //}
-
-            if (!isMenu)
-            {
-                Vector3 point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
-                if (Input.GetMouseButtonDown(0))
-                {
-
-                    Debug.Log(point.ToString());
-                }
-            }
         }
 
         // Update is called once per frame
@@ -57,6 +47,10 @@ namespace SBF.UI
         }
 
         public void GameEnd()
+        {
+            GameManager.Instance.LeaveRoom();
+        }
+        public void LeaveRoom()
         {
             GameManager.Instance.LeaveRoom();
         }

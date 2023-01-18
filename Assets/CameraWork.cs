@@ -1,9 +1,11 @@
 using UnityEngine;
+using Photon.Pun;
+using SBF.Network;
 
 namespace SBF
 {
     //딱히 필요 없어 보였는데 카메라때문에 문제 생겨서 복붙 긁어오기..
-    public class CameraWork : MonoBehaviour
+    public class CameraWork : MonoBehaviourPunCallbacks
     {
         #region Private Fields
 
@@ -45,27 +47,41 @@ namespace SBF
         /// &lt;/summary&gt;
         void Start()
         {
-            // Start following the target if wanted.
-            if (followOnStart)
+            if (photonView.IsMine)
             {
-                OnStartFollowing();
+                // Start following the target if wanted.
+                if (followOnStart)
+                {
+                    OnStartFollowing();
+                }
             }
         }
 
 
         void FixedUpdate()
         {
-            // The transform target may not destroy on level load,
-            // so we need to cover corner cases where the Main Camera is different everytime we load a new scene, and reconnect when that happens
-            if (cameraTransform == null && isFollowing)
+            if (!photonView.IsMine)
             {
-                OnStartFollowing();
+                return;
             }
-
-            // only follow is explicitly declared
-            if (isFollowing)
+            if (photonView.IsMine)
             {
-                Follow();
+                if (cameraTransform == null)
+                {
+                    OnStartFollowing();
+                }
+                // The transform target may not destroy on level load,
+                // so we need to cover corner cases where the Main Camera is different everytime we load a new scene, and reconnect when that happens
+                if (cameraTransform == null && isFollowing)
+                {
+                    OnStartFollowing();
+                }
+
+                // only follow is explicitly declared
+                if (isFollowing)
+                {
+                    Follow();
+                }
             }
         }
 
@@ -79,7 +95,7 @@ namespace SBF
         /// &lt;/summary&gt;
         public void OnStartFollowing()
         {
-            cameraTransform = Camera.main.transform;
+            cameraTransform = GetComponent<PlayerController>().cam.transform;
             isFollowing = true;
             // we don't smooth anything, we go straight to the right camera shot
             Cut();

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 using Photon.Pun;
 using SBF.Network;
@@ -10,7 +11,7 @@ namespace SBF
 {
     public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     {
-        
+        public PhotonView PV;
         #region IPunObservable implementation
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -61,9 +62,10 @@ namespace SBF
         // Start is called before the first frame update
         void Awake()
         {
+            PV = GetComponent<PhotonView>();
             // #Important
             // used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
-            if (photonView.IsMine)
+            if (PV.IsMine)
             {
                 PlayerController.LocalPlayerInstance = this.gameObject;
             }
@@ -78,7 +80,7 @@ namespace SBF
             dashTrigger = true;
             curHealth = maxHealth;
             bulletPos = GetComponentInChildren<BulletPos>().gameObject.transform;
-            cam = Camera.main;
+            //cam = Camera.main;
             animator = GetComponentInChildren<Animator>();
             if (!animator)
             {
@@ -89,8 +91,8 @@ namespace SBF
         void Start()
         {
 #if UNITY54ORNEWER
-        // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
+// Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
+UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
         {
             this.CalledOnLevelWasLoaded(scene.buildIndex);
         };
@@ -109,7 +111,7 @@ namespace SBF
             CameraWork _cameraWork = this.gameObject.GetComponent<CameraWork>();
             if (_cameraWork != null)
             {
-                if (photonView.IsMine)
+                if (PV.IsMine)
                 {
                     _cameraWork.OnStartFollowing();
                 }
@@ -143,10 +145,20 @@ namespace SBF
         // Update is called once per frame
         void Update()
         {
-            if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+            if (PV.IsMine == false && PhotonNetwork.IsConnected == true)
             {
                 return;
             }
+            
+            if (cam == null)
+            {
+                cam = Camera.main;
+            }
+            else if (cam != null)
+            {
+                    
+            }
+
             if (die)
             {
                 if (dieTrigger)
@@ -157,7 +169,7 @@ namespace SBF
             }
             else
             {
-                if (photonView.IsMine)
+                if (PV.IsMine)
                 {
                     ArrowRotation();
                     StatusCheck();
@@ -170,14 +182,18 @@ namespace SBF
                     }
                 }
             }
+            
         }
         void FixedUpdate()
         {
-            if (photonView.IsMine)
+            if (PV.IsMine)
             {
-                if (!isDash)
+                if (SceneManager.GetActiveScene().name != "Room for 1")
                 {
-                    Move();
+                    if (!isDash)
+                    {
+                        Move();
+                    }
                 }
             }
         }
@@ -196,11 +212,12 @@ namespace SBF
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 StartCoroutine(DashCooldown(charData.DashCooldown));
-                Dash();
+                PV.RPC("Dash", RpcTarget.All);
             }
            
         }
 
+        [PunRPC]
         void Dash()
         {
             animator.SetTrigger("Dash");
@@ -218,7 +235,7 @@ namespace SBF
                 if(attackTrigger)
                 {
                     StartCoroutine(AttackCooldown(charData.AttackCooldown));
-                    Attack();
+                    PV.RPC("Attack", RpcTarget.All);
                 }
             }
             if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -275,20 +292,27 @@ namespace SBF
             isDash = false;
         }
 
-
+        [PunRPC]
         void Attack()
         {
-            Debug.Log("shoot");
-            Vector3 point = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
-            Vector3 rotDir = new Vector3((point - transform.position).x, pointArrow.position.y, (point - transform.position).z);
+            if (cam == null)
+            {
+                Debug.Log("눈 던지려는 시도는 했는데, cam이 null이라 발사하지 못했음");
+            }
+            if (cam != null)
+            {
+                Debug.Log("정상적으로 쏘고 있음");
+                Vector3 point = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+                Vector3 rotDir = new Vector3((point - transform.position).x, pointArrow.position.y, (point - transform.position).z);
 
-            //GameObject addObject = (GameObject)Instantiate(moveData.VfxPreFabs, playerBody.transform.position // 이 포맷을 따른다
-            GameObject bullet = (GameObject)Instantiate(charData.AttackPrefs, bulletPos.transform.position, Quaternion.Euler(rotDir));
-            //bullet.transform.position = bulletPos.transform.position;
-            //bullet.transform.position += rotDir * 10f * Time.deltaTime; // 한번만 이동시키는 코드였네;
+                //GameObject addObject = (GameObject)Instantiate(moveData.VfxPreFabs, playerBody.transform.position // 이 포맷을 따른다
+                GameObject bullet = (GameObject)Instantiate(charData.AttackPrefs, bulletPos.transform.position, Quaternion.Euler(rotDir));
+                //bullet.transform.position = bulletPos.transform.position;
+                //bullet.transform.position += rotDir * 10f * Time.deltaTime; // 한번만 이동시키는 코드였네;
 
-            bullet.GetComponent<BulletObject>().owner = gameObject;
-            bullet.GetComponent<BulletObject>().shootAngle = new Vector3(rotDir.x, 0, rotDir.z).normalized;
+                bullet.GetComponent<BulletObject>().owner = gameObject;
+                bullet.GetComponent<BulletObject>().shootAngle = new Vector3(rotDir.x, 0, rotDir.z).normalized;
+            }
         }
 
         void LookRotCheck()
@@ -357,14 +381,15 @@ namespace SBF
 
         void ArrowRotation()
         {
+            if (cam != null)
+            {
+                Vector3 point = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -cam.transform.position.z));
+                Vector3 rotDir = new Vector3((point - transform.position).x, pointArrow.position.y, (point - transform.position).z);
+                pointArrow.forward = rotDir;
+                pointArrow.rotation = Quaternion.Euler(0, pointArrow.eulerAngles.y, pointArrow.eulerAngles.z);
+            }
 
-            Vector3 point = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
-
-            Vector3 rotDir = new Vector3((point - transform.position).x, pointArrow.position.y, (point - transform.position).z);
-
-            pointArrow.forward = rotDir;
-
-            pointArrow.rotation = Quaternion.Euler(0, pointArrow.eulerAngles.y, pointArrow.eulerAngles.z);
+            
             //pointArrow.forward = new Vector3(0, rotDir.y, rotDir.z);
 
 
