@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8855100719385853979}
   - component: {fileID: 8855100719385853978}
+  - component: {fileID: 8855100720533125838}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8855100719385853978
 MonoBehaviour:
@@ -45,3 +46,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1194466493254162148, guid: fd89acea28fa8b64c835aeb36f8dda3b, type: 3}
+  instantiateTrigger: 1
+  loadAranaTrigger: 1
+  roomCloseTrigger: 1
+  listText: {fileID: 0}
+  roomNameText: {fileID: 0}
+  roomPlayerCountText: {fileID: 0}
+  chatText:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  chatInput: {fileID: 0}
+  PV: {fileID: 8855100720533125838}
+--- !u!114 &8855100720533125838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8855100719385853977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

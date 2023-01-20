@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 namespace SBF.Network
 {
@@ -19,6 +20,14 @@ namespace SBF.Network
         public bool loadAranaTrigger = true;
         public bool roomCloseTrigger = true;
 
+        public TMP_Text listText;
+        public TMP_Text roomNameText;
+        public TMP_Text roomPlayerCountText;
+        public TMP_Text[] chatText;
+        public TMP_InputField chatInput;
+
+        [SerializeField] PhotonView PV;
+
         private void Awake()
         {
             //instantiateTrigger = true;
@@ -28,6 +37,7 @@ namespace SBF.Network
         void Start()
         {
             Instance = this;
+            //NetworkManager.RoomRenewal();
             //instantiateTrigger = true;
             // in case we started this demo with the wrong scene being active, simply load the menu scene
             if (!PhotonNetwork.IsConnected)
@@ -36,12 +46,12 @@ namespace SBF.Network
 
                 return;
             }
+            
             if (playerPrefab == null)
             { // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
 
                 Debug.LogError("<Color=Red><b>Missing</b></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
             }
-            
             else
             {
                 if (PlayerController.LocalPlayerInstance == null)
@@ -50,7 +60,7 @@ namespace SBF.Network
 
                     // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
                     PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 1f, 0f), Quaternion.identity, 0);
-                    Debug.LogError("인스턴스 트리거 밝혔거든");
+                    Debug.Log("인스턴스 트리거 밝혔거든");
                     //instantiateTrigger = false;
 
                 }
@@ -60,6 +70,8 @@ namespace SBF.Network
                     //instantiateTrigger = false;
                 }
             }
+
+            RoomRenewal();
 
         }
 
@@ -121,15 +133,16 @@ namespace SBF.Network
         /// <param name="other">Other.</param>
         public override void OnPlayerEnteredRoom(Player other)
         {
+            RoomRenewal();
+            ChatRPC(other.NickName + "님이 참가하셨습니다.");
             Debug.Log("OnPlayerEnteredRoom() " + other.NickName); // not seen if you're the player connecting
-
             //if (loadAranaTrigger)
             //{
             if (PhotonNetwork.IsMasterClient)
             {
                 Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
 
-                LoadArena();
+                //LoadArena();
                 //        loadAranaTrigger = false;
             }
             //}
@@ -141,13 +154,17 @@ namespace SBF.Network
 		/// <param name="other">Other.</param>
 		public override void OnPlayerLeftRoom(Player other)
         {
+            RoomRenewal();
+            
+            ChatRPC(other.NickName + "님이 퇴장했습니다");
+
             Debug.Log("OnPlayerLeftRoom() " + other.NickName); // seen when other disconnects
 
             if (PhotonNetwork.IsMasterClient)
             {
                 Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
 
-                LoadArena();
+                //LoadArena();
             }
         }
 
@@ -164,6 +181,40 @@ namespace SBF.Network
 
         #region Public Methods
 
+        public void RoomRenewal()
+        {
+            //for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+            //{
+            //    listText.text += PhotonNetwork.PlayerList[i].NickName + ((i + 1 == PhotonNetwork.PlayerList.Length) ? "" : ", ");
+            //}
+            roomNameText.text = PhotonNetwork.CurrentRoom.Name;
+            roomPlayerCountText.text = PhotonNetwork.CurrentRoom.PlayerCount + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
+        }
+
+        public void Send()
+        {
+            PV.RPC("ChatRPC", RpcTarget.All, PhotonNetwork.NickName + " : " + chatInput.text);
+            chatInput.text = "";
+        }
+
+        [PunRPC] // RPC는 플레이어가 속해있는 방 모든 인원에게 전달한다
+        void ChatRPC(string msg)
+        {
+            bool isInput = false;
+            for (int i = 0; i < chatText.Length; i++)
+                if (chatText[i].text == "")
+                {
+                    isInput = true;
+                    chatText[i].text = msg;
+                    break;
+                }
+            if (!isInput) // 꽉차면 한칸씩 위로 올림
+            {
+                for (int i = 1; i < chatText.Length; i++) chatText[i - 1].text = chatText[i].text;
+                chatText[chatText.Length - 1].text = msg;
+            }
+        }
+
         public void LeaveRoom()
         {
             PhotonNetwork.LeaveRoom();
@@ -171,6 +222,7 @@ namespace SBF.Network
 
         void LoadArena()
         {
+            //앞으로 LoadArena는 "게임시작"과 같은 기능을 하도록 한다.
             if (!PhotonNetwork.IsMasterClient)
             {
                 Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");

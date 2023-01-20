@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 
 using System.Collections;
+using System.Collections.Generic;
 
 using Photon.Pun;
 using Photon.Realtime;
@@ -18,6 +19,16 @@ namespace SBF.Network
         [Tooltip("The maximum number of players per room. When a room is full, it can't be joined by new players, and so new room will be created")]
         [SerializeField]
         private byte maxPlayersPerRoom = 4;
+
+        public TMP_InputField roomNameInput;
+        public Button[] rooms;
+        public Button prevButton;
+        public Button nextButton;
+
+        public GameObject noRoomNoticePanel;
+
+        List<RoomInfo> localList = new List<RoomInfo>();
+        int curPage = 1, maxPage, multiple;
 
         [Tooltip("The Ui Text to inform the user about the connection progress")]
         [SerializeField]
@@ -47,6 +58,7 @@ namespace SBF.Network
         void Awake()
         {
             isConnecting = true;
+            OnConnectedToMaster();
             PhotonNetwork.SendRate = 60;
             PhotonNetwork.SerializationRate = 30;
 
@@ -54,7 +66,6 @@ namespace SBF.Network
             // #Critical
             // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
             PhotonNetwork.AutomaticallySyncScene = true;
-            OnConnectedToMaster();
             PhotonNetwork.ConnectUsingSettings();
 
         }
@@ -64,6 +75,8 @@ namespace SBF.Network
         {
 
             PlayerCountCheck();
+
+            
 
         }
 
@@ -76,8 +89,15 @@ namespace SBF.Network
             //Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
 
             //feedbackText.text = (PhotonNetwork.NickName+"님 안녕하세용");
-            playerNameText.text = (PhotonNetwork.NickName);
+            PhotonNetwork.JoinLobby();
+            
 
+        }
+
+        public override void OnJoinedLobby()
+        {
+            playerNameText.text = (PhotonNetwork.NickName);
+            localList.Clear();
         }
 
         public override void OnDisconnected(DisconnectCause cause)
@@ -93,31 +113,77 @@ namespace SBF.Network
             Debug.Log("OnJoinRandomFailed() was called by PUN. 방 없어서 새로 방 만들었삼.\nCalling: PhotonNetwork.CreateRoom");
 
             // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
-            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+            PhotonNetwork.CreateRoom("Room" + Random.Range(0, 100), new RoomOptions { MaxPlayers = maxPlayersPerRoom });
 
+
+        }
+
+        public override void OnCreateRoomFailed(short returnCode, string message)
+        {
+            //base.OnCreateRoomFailed(returnCode, message);
+            PhotonNetwork.CreateRoom("Room" + Random.Range(0, 100), new RoomOptions { MaxPlayers = maxPlayersPerRoom });
         }
 
         public void PlayerCountCheck()
         {
             int curPlayerCount = PhotonNetwork.CountOfPlayers;
-            playerCountText.text = string.Format(curPlayerCount + "명 접속 중");
+            playerCountText.text = string.Format("로비 " + (curPlayerCount - PhotonNetwork.CountOfPlayersInRooms) +"명 / 전체 "+ curPlayerCount + "명 접속 중");
         }
 
         public override void OnJoinedRoom()
         {
             LogFeedback("<Color=Green>OnJoinedRoom</Color> with " + PhotonNetwork.CurrentRoom.PlayerCount + " Player(s)");
             Debug.Log("OnJoinedRoom() called by PUN. 클라 방에 들어감");
-            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
-            {
-                Debug.Log("매칭 씬에 들어감");
-
+            //if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+            //{
+            //    Debug.Log("매칭 씬에 들어감");
                 // #Critical
                 // Load the Room Level.
                 //SceneManager.LoadScene(1);
-                PhotonNetwork.LoadLevel("Room");
-            }
+            PhotonNetwork.LoadLevel("Room");
+           
+            //}
         }
 
+        public override void OnRoomListUpdate(List<RoomInfo> roomList)
+        {
+            int roomCount = roomList.Count;
+            if (PhotonNetwork.CountOfRooms == 0)
+            {
+                foreach (Button btns in rooms)
+                {
+                    btns.gameObject.SetActive(false);
+                }
+                noRoomNoticePanel.SetActive(true);
+            }
+            else
+            {
+                foreach (Button btns in rooms)
+                {
+                    btns.gameObject.SetActive(true);
+                }
+                noRoomNoticePanel.SetActive(false);
+            }
+            for (int i = 0; i < roomCount; i++)
+            {
+                if (!roomList[i].RemovedFromList)
+                {
+                    if (!localList.Contains(roomList[i]))
+                    {
+                        localList.Add(roomList[i]);
+                    }
+                    else
+                    {
+                        localList[localList.IndexOf(roomList[i])] = roomList[i];
+                    }
+                }
+                else if (localList.IndexOf(roomList[i]) != -1)
+                {
+                    localList.RemoveAt(localList.IndexOf(roomList[i]));
+                }
+                LocalListRenewal();
+            }
+        }
 
         #endregion
 
@@ -135,7 +201,7 @@ namespace SBF.Network
                 controlPanel.SetActive(true);
                 LogFeedback("Joining Room...");
                 // #Critical we need at this point to attempt joining a Random Room. If it fails, we'll get notified in OnJoinRandomFailed() and we'll create one.
-                PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+                PhotonNetwork.CreateRoom(roomNameInput.text == "" ? "Room" + Random.Range(0,100) : roomNameInput.text, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
             }
             else
             {
@@ -171,6 +237,38 @@ namespace SBF.Network
 
         }
 
+        public void LocalListClick(int num)
+        {
+            if (num == -2)
+            {
+                --curPage;
+            }
+            else if (num == -1)
+            {
+                ++curPage;
+            }
+            else PhotonNetwork.JoinRoom(localList[multiple + num].Name);
+            LocalListRenewal();
+        }
+
+        public void LocalListRenewal()
+        {
+            // 최대 페이지 정의. 룸 개수를 배열의 최대 개수로 나눈 값을 들고온다.
+            maxPage = (localList.Count % rooms.Length == 0) ? localList.Count / rooms.Length : localList.Count / rooms.Length + 1;
+
+            //이전 다음버튼이 꺼지도록 처리한다.
+            prevButton.interactable = (curPage <= 1) ? false : true;
+            nextButton.interactable = (curPage >= maxPage) ? false : true;
+
+            //페이지에 맞게 리스트에 대입한다.
+            multiple = (curPage - 1) * rooms.Length;
+            for (int i = 0; i < rooms.Length; i++)
+            {
+                rooms[i].interactable = (multiple + i < localList.Count) ? true : false;
+                rooms[i].transform.GetChild(0).GetComponent<TMP_Text>().text = (multiple + i < localList.Count) ? localList[multiple + i].Name : "";
+                rooms[i].transform.GetChild(1).GetComponent<TMP_Text>().text = (multiple + i < localList.Count) ? localList[multiple + i].PlayerCount + "/" + localList[multiple + i] : "";
+            }
+        }
 
         void LogFeedback(string message)
         {

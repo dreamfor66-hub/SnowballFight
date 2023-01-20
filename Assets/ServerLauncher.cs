@@ -92,7 +92,7 @@ namespace SBF.Network
             {
                 LogFeedback("Joining Room...");
                 // #Critical we need at this point to attempt joining a Random Room. If it fails, we'll get notified in OnJoinRandomFailed() and we'll create one.
-                PhotonNetwork.JoinLobby();
+                OnConnectedToMaster();
                 SceneManager.LoadScene("Lobby");
             }
             else
