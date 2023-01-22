@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &606312157671855859
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 606312157671855868}
+  - component: {fileID: 606312157671855869}
+  m_Layer: 0
+  m_Name: NetworkManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &606312157671855868
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606312157671855859}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.2929733, y: 1.9931823, z: 90.70036}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &606312157671855869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606312157671855859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98a2af2a1a833b4cb07f718f9fa0137, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxPlayersPerRoom: 3
+  playerPrefab: {fileID: 1194466493254162148, guid: 616842192d3529c46a22da4d68689de0, type: 3}
+  playerLobbyPivot: {fileID: 0}
+  playerCustomPivot: {fileID: 0}
+  roomNameInput: {fileID: 0}
+  rooms:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  prevButton: {fileID: 0}
+  nextButton: {fileID: 0}
+  cur_skinkey: 0
+  cur_hairkey: 0
+  cur_facehairkey: 0
+  cur_clothkey: 0
+  cur_pantskey: 0
+  cur_backkey: 0
+  cur_haircolorkey: 0
+  cur_eyescolorkey: 0
+  skinText: {fileID: 0}
+  hairText: {fileID: 0}
+  facehairText: {fileID: 0}
+  clothText: {fileID: 0}
+  pantsText: {fileID: 0}
+  backText: {fileID: 0}
+  hairColorbar: {fileID: 0}
+  eyesColorbar: {fileID: 0}
+  anim: {fileID: 0}
+  noRoomNoticePanel: {fileID: 0}
+  feedbackText: {fileID: 0}
+  playerNameText: {fileID: 0}
+  playerCountText: {fileID: 0}
+  controlPanel: {fileID: 0}

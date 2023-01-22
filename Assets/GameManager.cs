@@ -7,6 +7,9 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+
+
 namespace SBF.Network
 {
     public class GameManager : MonoBehaviourPunCallbacks
@@ -20,6 +23,15 @@ namespace SBF.Network
         public bool loadAranaTrigger = true;
         public bool roomCloseTrigger = true;
 
+        public int local_skinkey;
+        public int local_hairkey;
+        public int local_facehairkey;
+        public int local_clothkey;
+        public int local_pantskey;
+        public int local_backkey;
+        public int local_haircolorkey;
+        public int local_eyescolorkey;
+
         public TMP_Text listText;
         public TMP_Text roomNameText;
         public TMP_Text roomPlayerCountText;
@@ -27,16 +39,26 @@ namespace SBF.Network
         public TMP_InputField chatInput;
 
         [SerializeField] PhotonView PV;
+        public Hashtable playerCP;
+
+        public NetworkManager NM;
 
         private void Awake()
         {
+            //KeySetUp();
             //instantiateTrigger = true;
             //loadAranaTrigger = true;
+            //NM = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+            //KeySetUp();
+
         }
 
         void Start()
         {
             Instance = this;
+            
+
+            
             //NetworkManager.RoomRenewal();
             //instantiateTrigger = true;
             // in case we started this demo with the wrong scene being active, simply load the menu scene
@@ -46,7 +68,9 @@ namespace SBF.Network
 
                 return;
             }
+
             
+
             if (playerPrefab == null)
             { // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
 
@@ -73,12 +97,15 @@ namespace SBF.Network
 
             RoomRenewal();
 
+            
+
         }
 
         #region Photon Callbacks
 
         public void Update()
         {
+
             //if (SceneManager.GetActiveScene().name != "Room for 2")
             //{
             //    return;
@@ -127,12 +154,15 @@ namespace SBF.Network
             //}
         }
 
+
+
         /// <summary>
         /// Called when a Photon Player got connected. We need to then load a bigger scene.
         /// </summary>
         /// <param name="other">Other.</param>
         public override void OnPlayerEnteredRoom(Player other)
         {
+
             RoomRenewal();
             ChatRPC(other.NickName + "´ÔÀÌ Âü°¡ÇÏ¼Ì½À´Ï´Ù.");
             Debug.Log("OnPlayerEnteredRoom() " + other.NickName); // not seen if you're the player connecting
@@ -145,6 +175,7 @@ namespace SBF.Network
                 //LoadArena();
                 //        loadAranaTrigger = false;
             }
+            
             //}
         }
 
@@ -193,7 +224,7 @@ namespace SBF.Network
 
         public void Send()
         {
-            PV.RPC("ChatRPC", RpcTarget.All, PhotonNetwork.NickName + " : " + chatInput.text);
+            PV.RPC("ChatRPC", RpcTarget.All, "<" + PhotonNetwork.NickName + ">  " + chatInput.text);
             chatInput.text = "";
         }
 
@@ -234,6 +265,17 @@ namespace SBF.Network
             PhotonNetwork.LoadLevel("Room");
         }
 
+        //void KeySetUp()
+        //{
+        //    local_skinkey = NM.cur_skinkey;
+        //    local_hairkey = NM.cur_hairkey;
+        //    local_facehairkey = NM.cur_facehairkey;
+        //    local_clothkey = NM.cur_clothkey;
+        //    local_pantskey = NM.cur_pantskey;
+        //    local_backkey = NM.cur_backkey;
+        //    local_haircolorkey = NM.cur_haircolorkey;
+        //    local_eyescolorkey = NM.cur_eyescolorkey;
+        //}
 
         #endregion
 

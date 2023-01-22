@@ -53,6 +53,15 @@ namespace SBF
         bool dashTrigger = true;
         bool isDash = false;
 
+        public int saved_skinkey;
+        public int saved_hairkey;
+        public int saved_facehairkey;
+        public int saved_clothkey;
+        public int saved_pantskey;
+        public int saved_backkey;
+        public int saved_haircolorkey;
+        public int saved_eyescolorkey;
+
         Vector3 moveDir;
         [SerializeField]  Transform pointArrow;
         [SerializeField] Transform charBody;
@@ -68,6 +77,7 @@ namespace SBF
             if (PV.IsMine)
             {
                 PlayerController.LocalPlayerInstance = this.gameObject;
+                
             }
             // #Critical
             // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
@@ -197,6 +207,8 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
                 }
             }
         }
+
+        
         void MoveInputCheck()
         {
             moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));

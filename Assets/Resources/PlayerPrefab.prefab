@@ -228,6 +228,14 @@ MonoBehaviour:
   charData: {fileID: 11400000, guid: 92b6a71a200241041b2012dcbb26a35c, type: 2}
   curHealth: 0
   die: 0
+  saved_skinkey: 0
+  saved_hairkey: 0
+  saved_facehairkey: 0
+  saved_clothkey: 0
+  saved_pantskey: 0
+  saved_backkey: 0
+  saved_haircolorkey: 0
+  saved_eyescolorkey: 0
   pointArrow: {fileID: 1194466491602632734}
   charBody: {fileID: 1194466493253063295}
   cam: {fileID: 0}
@@ -1005,6 +1013,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8448639854637603472, guid: 0413ce761329a5a4eaa275aaf0035d9a, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ab937231d0600440fb0d8757568d78d7, type: 2}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 0413ce761329a5a4eaa275aaf0035d9a, type: 3}
