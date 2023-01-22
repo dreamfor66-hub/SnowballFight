@@ -291,6 +291,7 @@ GameObject:
   - component: {fileID: 5449030798901132256}
   - component: {fileID: 6445892922411184209}
   - component: {fileID: 6064516425584975648}
+  - component: {fileID: 3812313636968182325}
   m_Layer: 5
   m_Name: CharacterBase
   m_TagString: Untagged
@@ -582,6 +583,30 @@ MonoBehaviour:
   - "\uB2E4\uD06C \uD788\uC5B4\uB85C\uC758 \uB9DD\uD1A0"
   - "\uB0A1\uC740 \uB9DD\uD1A0"
   - "\uB2E5\uD130 \uC2A4\uD2B8\uB808\uC778\uC9C0"
+  PC: {fileID: 0}
+  GM: {fileID: 0}
+--- !u!114 &3812313636968182325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881844759614049855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &991261296931799207
 GameObject:
   m_ObjectHideFlags: 0

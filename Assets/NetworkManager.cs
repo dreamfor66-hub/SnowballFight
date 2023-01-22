@@ -137,7 +137,17 @@ namespace SBF.Network
 
             //feedbackText.text = (PhotonNetwork.NickName+"님 안녕하세용");
             PhotonNetwork.JoinLobby();
-            
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable
+            {
+                { "skinkey", cur_skinkey },
+                { "hairkey",cur_hairkey },
+                { "facehairkey",cur_facehairkey},
+                { "clothkey",cur_clothkey },
+                { "pantskey",cur_pantskey},
+                { "backkey",cur_backkey},
+                { "haircolorkey",cur_haircolorkey },
+                { "eyescolorkey",cur_eyescolorkey }
+            });
 
         }
 
@@ -145,6 +155,8 @@ namespace SBF.Network
         {
             playerNameText.text = (PhotonNetwork.NickName);
             localList.Clear();
+
+            
 
             GameObject a = (GameObject)Instantiate(playerPrefab, playerLobbyPivot.transform.position, Quaternion.Euler(new Vector3(-90,0,0)), playerLobbyPivot.transform);
             GameObject b = (GameObject)Instantiate(playerPrefab, playerCustomPivot.transform.position, Quaternion.Euler(new Vector3(-90, 0, 0)), playerCustomPivot.transform);
@@ -196,17 +208,7 @@ namespace SBF.Network
             // Load the Room Level.
             //SceneManager.LoadScene(1);
 
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable
-            {
-                { "skinkey", cur_skinkey },
-                { "hairkey",cur_hairkey },
-                { "facehairkey",cur_facehairkey},
-                { "clothkey",cur_clothkey },
-                { "pantskey",cur_pantskey},
-                { "backkey",cur_backkey},
-                { "haircolorkey",cur_haircolorkey },
-                { "eyescolorkey",cur_eyescolorkey }
-            });
+            
 
             PhotonNetwork.LoadLevel("Room");
            
@@ -369,7 +371,7 @@ namespace SBF.Network
                 }
                 else cur_skinkey--;
             }
-            TextChange();
+            TextChange(); UpdateSkinKey();
         }
 
         public void HairKeyChange(int value) //-2가 왼쪽, -1이 오른쪽 or... 모든 prev 버튼에 다 달아놓게 하고, key를 각각 다르게 주입한다?
@@ -391,7 +393,7 @@ namespace SBF.Network
                 }
                 else cur_hairkey--;
             }
-            TextChange();
+            TextChange(); UpdateSkinKey();
         }
         public void HairColorKeyChange(int value) //-2가 왼쪽, -1이 오른쪽
         {
@@ -412,7 +414,7 @@ namespace SBF.Network
                 }
                 else cur_haircolorkey--;
             }
-            TextChange();
+            TextChange(); UpdateSkinKey();
         }
 
         public void EyesColorKeyChange(int value) //-2가 왼쪽, -1이 오른쪽
@@ -434,7 +436,7 @@ namespace SBF.Network
                 }
                 else cur_eyescolorkey--;
             }
-            TextChange();
+            TextChange(); UpdateSkinKey();
         }
         public void FaceHairKeyChange(int value) //-2가 왼쪽, -1이 오른쪽
         {
@@ -455,7 +457,7 @@ namespace SBF.Network
                 }
                 else cur_facehairkey--;
             }
-            TextChange();
+            TextChange(); UpdateSkinKey();
         }
 
         public void ClothKeyChange(int value) //-2가 왼쪽, -1이 오른쪽
@@ -477,7 +479,7 @@ namespace SBF.Network
                 }
                 else cur_clothkey--;
             }
-            TextChange();
+            TextChange(); UpdateSkinKey();
         }
 
         public void PantsKeyChange(int value) //-2가 왼쪽, -1이 오른쪽
@@ -499,7 +501,7 @@ namespace SBF.Network
                 }
                 else cur_pantskey--;
             }
-            TextChange();
+            TextChange(); UpdateSkinKey();
         }
         public void BackKeyChange(int value) //-2가 왼쪽, -1이 오른쪽
         {
@@ -521,6 +523,22 @@ namespace SBF.Network
                 else cur_backkey--;
             }
             TextChange();
+            UpdateSkinKey();
+        }
+
+        public void UpdateSkinKey()
+        {
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable
+            {
+                { "skinkey", cur_skinkey},
+                { "hairkey",cur_hairkey},
+                { "facehairkey",cur_facehairkey},
+                { "clothkey",cur_clothkey },
+                { "pantskey",cur_pantskey},
+                { "backkey",cur_backkey},
+                { "haircolorkey",cur_haircolorkey },
+                { "eyescolorkey",cur_eyescolorkey }
+            });
         }
 
         public void TextChange()
@@ -554,7 +572,7 @@ namespace SBF.Network
             cur_backkey = Random.Range(0, backmaxvalue);
             cur_haircolorkey = Random.Range(0, haircolormaxvalue);
             cur_eyescolorkey = Random.Range(0, eyescolormaxvalue);
-
+            UpdateSkinKey();
             TextChange();
         }
 

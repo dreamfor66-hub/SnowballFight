@@ -205,6 +205,7 @@ namespace SBF.Network
         public override void OnLeftRoom()
         {
             SceneManager.LoadScene("Lobby");
+            PhotonNetwork.JoinLobby();
         }
 
 
@@ -249,6 +250,7 @@ namespace SBF.Network
         public void LeaveRoom()
         {
             PhotonNetwork.LeaveRoom();
+            PhotonNetwork.JoinLobby();
         }
 
         void LoadArena()

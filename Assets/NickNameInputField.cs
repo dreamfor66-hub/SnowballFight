@@ -69,7 +69,7 @@ namespace SBF.Network
             string value = inputField.text;
             if (string.IsNullOrEmpty(value))
             {
-                Debug.LogError("Player Name is null or empty");
+                Debug.Log("Player Name is null or empty");
                 return;
             }
             PhotonNetwork.NickName = value;

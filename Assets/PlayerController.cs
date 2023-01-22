@@ -53,6 +53,7 @@ namespace SBF
         bool dashTrigger = true;
         bool isDash = false;
 
+
         public int saved_skinkey;
         public int saved_hairkey;
         public int saved_facehairkey;
@@ -77,11 +78,12 @@ namespace SBF
             if (PV.IsMine)
             {
                 PlayerController.LocalPlayerInstance = this.gameObject;
-                
             }
             // #Critical
             // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
             DontDestroyOnLoad(this.gameObject);
+
+            
 
             die = false;
             attackTrigger = true;
