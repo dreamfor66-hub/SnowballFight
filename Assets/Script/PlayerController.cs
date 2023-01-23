@@ -249,7 +249,11 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
                 if(attackTrigger)
                 {
                     StartCoroutine(AttackCooldown(charData.AttackCooldown));
-                    PV.RPC("Attack", RpcTarget.All);
+
+                    Vector3 point = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+                    Vector3 rotDir = new Vector3((point - transform.position).x, pointArrow.position.y, (point - transform.position).z);
+
+                    PV.RPC("Attack", RpcTarget.All, rotDir);
                 }
             }
             if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -307,7 +311,7 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
         }
 
         [PunRPC]
-        void Attack()
+        void Attack(Vector3 rotDir)
         {
             if (cam == null)
             {
@@ -316,8 +320,7 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
             if (cam != null)
             {
                 Debug.Log("정상적으로 쏘고 있음");
-                Vector3 point = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
-                Vector3 rotDir = new Vector3((point - transform.position).x, pointArrow.position.y, (point - transform.position).z);
+               
 
                 //GameObject addObject = (GameObject)Instantiate(moveData.VfxPreFabs, playerBody.transform.position // 이 포맷을 따른다
                 GameObject bullet = (GameObject)Instantiate(charData.AttackPrefs, bulletPos.transform.position, Quaternion.Euler(rotDir));
