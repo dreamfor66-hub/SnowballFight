@@ -420,6 +420,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4f85d8acfb37d7248b4be6f85c5e647f, type: 3}
   - {fileID: 21300000, guid: 38da359db0a01a844aca79f529ce35cf, type: 3}
   usableClothBodyList:
+  - {fileID: -386983977432367671, guid: 8baa94f93a27d9f4ead0bf9f505a5be2, type: 3}
   - {fileID: -2733704329670916693, guid: 49a2ac77bcc4b22479195a91df4df21c, type: 3}
   - {fileID: -7650184365866704765, guid: 411cee2db03ae6043a5250664899c493, type: 3}
   - {fileID: -5059617106600631265, guid: 6a499b8c9e89beb40baa7d2af7d48442, type: 3}
@@ -432,8 +433,8 @@ MonoBehaviour:
   - {fileID: 4207501386822081471, guid: 41130aa278fd6ae4dbe27a5c98e7d9bd, type: 3}
   - {fileID: -4637655676411158975, guid: 2021ec4384fa0fd4a9ab2c12ca0b97e1, type: 3}
   - {fileID: 2417682793121042855, guid: 0bd3ec7a4563be740b7b6a0bdcd9105b, type: 3}
-  - {fileID: -386983977432367671, guid: 8baa94f93a27d9f4ead0bf9f505a5be2, type: 3}
   usableArmLeftList:
+  - {fileID: -3501919001399007183, guid: 8baa94f93a27d9f4ead0bf9f505a5be2, type: 3}
   - {fileID: -3283878981979326925, guid: 49a2ac77bcc4b22479195a91df4df21c, type: 3}
   - {fileID: 1941588151021849806, guid: 411cee2db03ae6043a5250664899c493, type: 3}
   - {fileID: -4433046098323040821, guid: 6a499b8c9e89beb40baa7d2af7d48442, type: 3}
@@ -446,8 +447,8 @@ MonoBehaviour:
   - {fileID: -5800836446433278925, guid: 41130aa278fd6ae4dbe27a5c98e7d9bd, type: 3}
   - {fileID: 4038240812463133292, guid: 2021ec4384fa0fd4a9ab2c12ca0b97e1, type: 3}
   - {fileID: 601630182038751158, guid: 0bd3ec7a4563be740b7b6a0bdcd9105b, type: 3}
-  - {fileID: -3501919001399007183, guid: 8baa94f93a27d9f4ead0bf9f505a5be2, type: 3}
   usableArmRightList:
+  - {fileID: 6712671587012831569, guid: 8baa94f93a27d9f4ead0bf9f505a5be2, type: 3}
   - {fileID: -1496476315439836622, guid: 49a2ac77bcc4b22479195a91df4df21c, type: 3}
   - {fileID: 3832911645102586382, guid: 411cee2db03ae6043a5250664899c493, type: 3}
   - {fileID: -8220607459341252921, guid: 6a499b8c9e89beb40baa7d2af7d48442, type: 3}
@@ -460,7 +461,6 @@ MonoBehaviour:
   - {fileID: 3763680570071632466, guid: 41130aa278fd6ae4dbe27a5c98e7d9bd, type: 3}
   - {fileID: 7972047035149555109, guid: 2021ec4384fa0fd4a9ab2c12ca0b97e1, type: 3}
   - {fileID: 1595887472439937909, guid: 0bd3ec7a4563be740b7b6a0bdcd9105b, type: 3}
-  - {fileID: 6712671587012831569, guid: 8baa94f93a27d9f4ead0bf9f505a5be2, type: 3}
   usablePantsLeftList:
   - {fileID: -62334307996113135, guid: 2bef0880051b4cb43a98fda34d7f70f4, type: 3}
   - {fileID: -997006319698520551, guid: c3ce93e9e184cbe4f80b103e0b593554, type: 3}
@@ -498,6 +498,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8aed36db51abe094fac227d9578c15e1, type: 3}
   - {fileID: 21300000, guid: 597f345a7e343834baa4263b9a2039c0, type: 3}
   usableColorList:
+  - {r: 0.14457993, g: 0.16250649, b: 0.1792453, a: 1}
   - {r: 0.7960785, g: 0.7960785, b: 0.7960785, a: 1}
   - {r: 0.9433962, g: 0.14684942, b: 0.14684942, a: 1}
   - {r: 1, g: 0.63962233, b: 0, a: 1}
@@ -509,7 +510,6 @@ MonoBehaviour:
   - {r: 0.10791205, g: 0.60673183, b: 0.9150943, a: 1}
   - {r: 0.44455323, g: 0.50703764, b: 0.8490566, a: 1}
   - {r: 0.23137312, g: 0.099857606, b: 0.6415094, a: 1}
-  - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0.2924528, g: 0.22435892, b: 0.14208794, a: 1}
   - {r: 1, g: 0, b: 0.9635534, a: 1}
   - {r: 1, g: 0.7688679, b: 0.968276, a: 1}
@@ -549,6 +549,7 @@ MonoBehaviour:
   - "\uADF8\uC744\uB9B0 \uD53C\uBD80"
   - "\uAC80\uC740 \uD53C\uBD80"
   clothTextList:
+  - "\uD30C\uB780 \uD30C\uCE74"
   - "\uC62C\uB824\uC785\uC740 \uC9D1\uC5C5\uD6C4\uB4DC"
   - "\uAE38\uAC70\uB9AC\uC758 \uD3EC\uD1A0\uADF8\uB798\uD37C"
   - "\uCCAD\uD328\uB529"
@@ -561,7 +562,6 @@ MonoBehaviour:
   - "\uC624\uBC84\uD54F \uB808\uC774\uC5B4\uB4DC \uC154\uCE20"
   - "\uAC08\uC0C9 \uD328\uB529"
   - "\uCD94\uB9AC\uB2DD \uC0C1\uC758"
-  - "\uD30C\uB780 \uD30C\uCE74"
   pantsTextList:
   - "\uCCAD\uBC14\uC9C0"
   - "\uAE54\uAE54\uC774 \uBC14\uC9C0"

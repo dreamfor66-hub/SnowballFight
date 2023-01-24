@@ -6,11 +6,13 @@ using UnityEngine.Networking;
 using Photon.Pun;
 using SBF.Network;
 using SBF.UI;
+using TMPro;
 
 namespace SBF
 {
     public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     {
+        
         public PhotonView PV;
         #region IPunObservable implementation
 
@@ -37,11 +39,12 @@ namespace SBF
 
         [Tooltip("플레이어의 UI 게임오브젝트 프리팹")]
         public GameObject playerUiPrefab;
+        public GameObject localUI;
 
         Vector3 rotOffset_Normal = new Vector3 (90,0,0);
         Vector3 rotOffset_Reverse = new Vector3 (-90, 0, 180);
 
-        Transform bulletPos;
+        [SerializeField]Transform bulletPos;
         Animator animator;
         [SerializeField] public CharacterData charData;
         float maxHealth => charData.MaxHp;
@@ -53,6 +56,13 @@ namespace SBF
         bool dashTrigger = true;
         bool isDash = false;
 
+        public bool isChat = false;
+        
+
+        [Tooltip("플레이어가 채팅한 걸 전달해줌")]
+        public GameObject chatbox;
+        public TMP_Text playerChatName;
+        public TMP_Text playerChatText;
 
         public int saved_skinkey;
         public int saved_hairkey;
@@ -79,6 +89,10 @@ namespace SBF
             {
                 PlayerController.LocalPlayerInstance = this.gameObject;
             }
+            else
+            {
+                pointArrow.gameObject.SetActive(false);
+            }
             // #Critical
             // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
             DontDestroyOnLoad(this.gameObject);
@@ -91,7 +105,7 @@ namespace SBF
             isDash = false;
             dashTrigger = true;
             curHealth = maxHealth;
-            bulletPos = GetComponentInChildren<BulletPos>().gameObject.transform;
+            //bulletPos = GetComponentInChildren<BulletPos>().gameObject.transform;
             //cam = Camera.main;
             animator = GetComponentInChildren<Animator>();
             if (!animator)
@@ -113,6 +127,13 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
             {
                 GameObject _uiGo = Instantiate(playerUiPrefab);
                 _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+                //if (PV.IsMine)
+                //{
+                    localUI = _uiGo;
+                    chatbox = localUI.GetComponent<PlayerUI>().chatbox;
+                    //playerChatName = localUI.GetComponent<PlayerUI>().playerChatName;
+                    //playerChatText = localUI.GetComponent<PlayerUI>().playerChatText;
+                //}
             }
             else
             {
@@ -150,8 +171,16 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
             {
                 transform.position = new Vector3(0f, 5f, 0f);
             }
-            GameObject _uiGo = Instantiate(this.playerUiPrefab);
+            GameObject _uiGo = Instantiate(playerUiPrefab);
             _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+            if (PV.IsMine)
+            {
+                localUI = _uiGo;
+                chatbox = localUI.GetComponent<PlayerUI>().chatbox;
+                playerChatName = localUI.GetComponent<PlayerUI>().playerChatName;
+                playerChatText = localUI.GetComponent<PlayerUI>().playerChatText;
+            }
+
         }
 
         // Update is called once per frame
@@ -185,7 +214,7 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
                 {
                     ArrowRotation();
                     StatusCheck();
-                    if (!isDash)
+                    if (!isDash && !isChat)
                     {
                         LookRotCheck();
                         MoveInputCheck();
@@ -202,15 +231,19 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
             {
                 if (SceneManager.GetActiveScene().name != "Room for 1")
                 {
-                    if (!isDash)
+                    if (!isDash && !isChat)
                     {
                         Move();
+                    }
+                    else if (!isDash && isChat)
+                    {
+                        animator.ResetTrigger("Move");
+                        animator.SetTrigger("Idle");
                     }
                 }
             }
         }
 
-        
         void MoveInputCheck()
         {
             moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
@@ -380,6 +413,22 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
 
         void StatusCheck()
         {
+            
+            //if (Input.GetKeyDown(KeyCode.Return))
+            //{
+            //if (isChat)
+            //{
+            //    isChat = false;
+            //}
+            //else if (!isChat)
+            //{
+            //    GameManager GM = GameObject.Find("GameManager").GetComponent<GameManager>();
+            //    GM.SendMessage("Send");
+            //    isChat = true;
+            //}
+
+            //}
+
             if (curHealth > 0)
             {
                 return;
@@ -457,5 +506,38 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
             //Debug.Log("Hi " + collTag);
         }
 
+        void ChatRPCReceiver(string msg)
+        {
+            PV.RPC("ChatboxRPC", RpcTarget.All, msg, PhotonNetwork.NickName);
+            
+        }
+
+        [PunRPC]
+        void ChatboxRPC(string msg, string name)
+        {
+            StopCoroutine("ChatBoxDuration"); //왜 이름으로 안하고 함수형태로 하면 완전한 재시작이 안되고 중간부터 다시 실행시키는거지?
+            localUI.GetComponent<PlayerUI>().namebox.SetActive(true);
+            localUI.GetComponent<PlayerUI>().chatbox.SetActive(false);
+
+            StartCoroutine("ChatBoxDuration");
+            localUI.GetComponent<PlayerUI>().namebox.SetActive(false);
+            localUI.GetComponent<PlayerUI>().chatbox.SetActive(true);
+            localUI.GetComponent<PlayerUI>().playerChatText.text = msg;
+            localUI.GetComponent<PlayerUI>().playerChatName.text = name;
+        }
+
+        IEnumerator ChatBoxDuration()
+        {
+            var time = 3f;
+
+            while (time > 0)
+            {
+                yield return new WaitForFixedUpdate();
+
+                time -= Time.deltaTime;
+            }
+            localUI.GetComponent<PlayerUI>().chatbox.SetActive(false);
+            localUI.GetComponent<PlayerUI>().namebox.SetActive(true);
+        }
     }
 }

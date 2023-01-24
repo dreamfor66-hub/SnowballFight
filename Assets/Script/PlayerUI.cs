@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using SBF.Network;
 
+
 namespace SBF.UI
 {
     public class PlayerUI : MonoBehaviour
@@ -24,11 +25,17 @@ namespace SBF.UI
         [SerializeField]
         private Slider playerHealthSlider;
 
+        [Tooltip("플레이어가 채팅한 걸 전달해줌")]
+        public GameObject chatbox;
+        public TMP_Text playerChatName;
+        public TMP_Text playerChatText;
+        public GameObject namebox;
 
         Transform targetTransform;
         Vector3 targetPosition;
 
         PlayerController target;
+
 
         #endregion
 
@@ -43,8 +50,8 @@ namespace SBF.UI
             if (target == null)
             {
                 Debug.Log("타겟 널임");
-                //Destroy(this.gameObject);
-                //return;
+                Destroy(this.gameObject);
+                return;
             }
             // Reflect the Player Health
             if (playerHealthSlider != null)
@@ -73,10 +80,11 @@ namespace SBF.UI
             if (playerNameText != null)
             {
                 playerNameText.text = target.photonView.Owner.NickName;
+                //playerChatName.text = target.photonView.Owner.NickName;
             }
-            else
+            else if (playerNameText == null || playerNameText.text == "")
             {
-                playerNameText.text = "이름없음";
+                playerNameText.text = "이름없는 아저씨";
             }
         }
 
@@ -95,6 +103,13 @@ namespace SBF.UI
                 }
             }
         }
+
+        //void ChatRPCReceiver(string msg)
+        //{
+        //    target.PV.RPC("ChatboxRPC", RpcTarget.All, msg);
+        //}
+
+
         #endregion
 
     }

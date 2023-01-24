@@ -66,6 +66,8 @@ namespace SBF.Network
         private TMP_Text feedbackText;
         [SerializeField]
         private TMP_Text playerNameText;
+        [SerializeField]
+        private TMP_Text playerNamePreview;
 
         [SerializeField]
         private TMP_Text playerCountText;
@@ -121,10 +123,10 @@ namespace SBF.Network
 
         private void Update()
         {
-            if (SceneManager.GetActiveScene().name == "Lobby")
-            {
-                PlayerCountCheck();
-            }
+            //if (SceneManager.GetActiveScene().name == "Lobby")
+            //{
+             PlayerCountCheck();
+            //}
         }
 
         public override void OnConnectedToMaster()
@@ -154,6 +156,7 @@ namespace SBF.Network
         public override void OnJoinedLobby()
         {
             playerNameText.text = (PhotonNetwork.NickName);
+            playerNamePreview.text = (PhotonNetwork.NickName);
             localList.Clear();
 
             

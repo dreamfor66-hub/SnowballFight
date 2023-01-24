@@ -143,7 +143,7 @@ Transform:
   m_GameObject: {fileID: 1194466493253063288}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6560970972311243021}
@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 3477709423422979681}
   - component: {fileID: 6063707375576995023}
   - component: {fileID: 1308764947740562574}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -225,9 +225,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PV: {fileID: 0}
   playerUiPrefab: {fileID: 5948737564031525466, guid: b858cf4d47f68904d814183750d7fdf2, type: 3}
+  localUI: {fileID: 0}
+  bulletPos: {fileID: 2076254961910719595}
   charData: {fileID: 11400000, guid: 92b6a71a200241041b2012dcbb26a35c, type: 2}
   curHealth: 0
   die: 0
+  isChat: 0
+  chatbox: {fileID: 0}
+  playerChatName: {fileID: 0}
+  playerChatText: {fileID: 0}
   saved_skinkey: 0
   saved_hairkey: 0
   saved_facehairkey: 0
@@ -873,10 +879,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -917,6 +923,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3812313636968182325, guid: 0413ce761329a5a4eaa275aaf0035d9a, type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3812313636968182325, guid: 0413ce761329a5a4eaa275aaf0035d9a, type: 3}
+      propertyPath: ObservedComponents.Array.data[0]
+      value: 
+      objectReference: {fileID: 5786259652044135623}
     - target: {fileID: 5449030798901132256, guid: 0413ce761329a5a4eaa275aaf0035d9a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

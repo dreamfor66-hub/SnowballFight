@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using SBF.UI;
 
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
@@ -105,7 +106,17 @@ namespace SBF.Network
 
         public void Update()
         {
-
+            //if (PV.IsMine)
+            //{
+                if(Input.GetKeyDown(KeyCode.Return))
+                {
+                    
+                    Send();
+                    //chatInput.ActivateInputField();
+                    chatInput.Select();
+                }
+                PlayerController.LocalPlayerInstance.GetComponent<PlayerController>().isChat = chatInput.isFocused;
+            //}
             //if (SceneManager.GetActiveScene().name != "Room for 2")
             //{
             //    return;
@@ -225,11 +236,23 @@ namespace SBF.Network
 
         public void Send()
         {
-            PV.RPC("ChatRPC", RpcTarget.All, "<" + PhotonNetwork.NickName + ">  " + chatInput.text);
+            //PlayerController.LocalPlayerInstance.GetComponent<PlayerController>().isChat = false;
+
+            if (chatInput.text != "")
+            {
+                PV.RPC("ChatRPC", RpcTarget.All, "<" + PhotonNetwork.NickName + ">  " + "<b>"+ chatInput.text+"</b>");
+            
+            
+                GameObject local = PlayerController.LocalPlayerInstance;
+                PlayerController PC = local.GetComponent<PlayerController>();
+                //PlayerUI PCUI = PC.localUI.GetComponent<PlayerUI>();
+                PC.SendMessage("ChatRPCReceiver", chatInput.text, SendMessageOptions.DontRequireReceiver);
+
+            }
             chatInput.text = "";
         }
 
-        [PunRPC] // RPC는 플레이어가 속해있는 방 모든 인원에게 전달한다
+        [PunRPC] // 플레이어가 속해있는 방 모든 인원에게 전달한다
         void ChatRPC(string msg)
         {
             bool isInput = false;

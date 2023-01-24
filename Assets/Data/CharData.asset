@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: CharData
   m_EditorClassIdentifier: 
   MaxHp: 100
-  MoveSpd: 7
-  DashCooldown: 5
-  DashSpd: 10
+  MoveSpd: 7.5
+  DashCooldown: 3
+  DashSpd: 11
   DashDur: 0.7
   DashMoveCurve:
     serializedVersion: 2
@@ -31,7 +31,7 @@ MonoBehaviour:
       outWeight: 0.13409758
     - serializedVersion: 3
       time: 0.09157727
-      value: 1.5104413
+      value: 1.5639005
       inSlope: -0.031567942
       outSlope: -0.031567942
       tangentMode: 0
@@ -58,7 +58,7 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 0.5865896
-      value: 0.490198
+      value: 0.6805972
       inSlope: -2.0378835
       outSlope: -2.0378835
       tangentMode: 0
@@ -68,8 +68,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0.7083931
       value: 0.4995799
-      inSlope: 0.032535024
-      outSlope: 0.032535024
+      inSlope: -0.7490483
+      outSlope: -0.7490483
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -88,5 +88,5 @@ MonoBehaviour:
     m_RotationOrder: 4
   AttackPrefs: {fileID: 4227997841550773922, guid: baf83a8d2db1eeb4cace07ec17c5b621, type: 3}
   AttackCooldown: 0.5
-  AttackSpd: 14
-  AttackDur: 1
+  AttackSpd: 20
+  AttackDur: 0.5
