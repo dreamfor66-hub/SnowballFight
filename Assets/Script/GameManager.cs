@@ -1,6 +1,7 @@
 using System.Collections;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 using Photon.Pun;
@@ -108,14 +109,30 @@ namespace SBF.Network
         {
             //if (PV.IsMine)
             //{
-                if(Input.GetKeyDown(KeyCode.Return))
-                {
+            if(Input.GetKeyDown(KeyCode.Return))
+            {
+                //if (chatInput.isFocused == true)
+                //{
+                //    Send();
+                //    //chatInput.ActivateInputField();
+                //    //chatInput.DeactivateInputField(false);
                     
+                //    //chatInput.Select();
+                //    //Debug.Log("들어가긴 하니?");
+
+                //}
+                //else if (chatInput.isFocused == false)
+                //{
                     Send();
-                    //chatInput.ActivateInputField();
                     chatInput.Select();
-                }
+                EventSystem.current.SetSelectedGameObject(null);
+                //}
+
+            }
+            if (PlayerController.LocalPlayerInstance != null)
+            {
                 PlayerController.LocalPlayerInstance.GetComponent<PlayerController>().isChat = chatInput.isFocused;
+            }
             //}
             //if (SceneManager.GetActiveScene().name != "Room for 2")
             //{
