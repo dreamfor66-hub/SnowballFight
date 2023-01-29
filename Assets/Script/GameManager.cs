@@ -17,6 +17,7 @@ namespace SBF.Network
 {
     public class GameManager : MonoBehaviourPunCallbacks
     {
+        //public byte maxPlayersPerRoom;
         public static GameManager Instance;
 
         [Tooltip("The prefab to use for representing the player")]
@@ -41,6 +42,14 @@ namespace SBF.Network
         public TMP_Text[] chatText;
         public TMP_InputField chatInput;
 
+        public GameObject roomInfoFix;
+        public Toggle roomLockToggle;
+        public TMP_Text roomPlayerNumber;
+        public Button roomPlayerNumbernextButton;
+        public Button roomPlayerNumberprevButton;
+        public Image roomLock;
+        public Image roomUnlock;
+
         public Button gameStartButton;
 
         [SerializeField] PhotonView PV;
@@ -62,54 +71,61 @@ namespace SBF.Network
         {
             Instance = this;
             
-            if (!PhotonNetwork.IsMasterClient)
+            if (SceneManager.GetActiveScene().name == "Room")
             {
-                gameStartButton.gameObject.SetActive(false);
-            }
-            else
-            {
-                gameStartButton.gameObject.SetActive(true);
-            }
-            
-            //NetworkManager.RoomRenewal();
-            //instantiateTrigger = true;
-            // in case we started this demo with the wrong scene being active, simply load the menu scene
-            if (!PhotonNetwork.IsConnected)
-            {
-                SceneManager.LoadScene("Lobby");
-
-                return;
-            }
-
-            
-
-            if (playerPrefab == null)
-            { // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
-
-                Debug.LogError("<Color=Red><b>Missing</b></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
-            }
-            else
-            {
-                if (PlayerController.LocalPlayerInstance == null)
+                if (!PhotonNetwork.IsMasterClient)
                 {
-                    Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-
-                    // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                    PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 1f, 0f), Quaternion.identity, 0);
-                    Debug.Log("인스턴스 트리거 밝혔거든");
-                    //instantiateTrigger = false;
-
+                    gameStartButton.gameObject.SetActive(false);
+                    roomInfoFix.SetActive(false);
                 }
                 else
                 {
-                    Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
-                    //instantiateTrigger = false;
+                    gameStartButton.gameObject.SetActive(true);
+                    roomInfoFix.SetActive(true);
                 }
-            }
-
-            RoomRenewal();
 
             
+            
+                //NetworkManager.RoomRenewal();
+                //instantiateTrigger = true;
+                // in case we started this demo with the wrong scene being active, simply load the menu scene
+                if (!PhotonNetwork.IsConnected)
+                {
+                    PhotonNetwork.LeaveRoom();
+                    SceneManager.LoadScene("Lobby");
+
+                    return;
+                }
+
+            
+
+                if (playerPrefab == null)
+                { // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
+
+                    Debug.LogError("<Color=Red><b>Missing</b></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
+                }
+                else
+                {
+                    if (PlayerController.LocalPlayerInstance == null)
+                    {
+                        Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+
+                        // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+                        PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 1f, 0f), Quaternion.identity, 0);
+                        Debug.Log("인스턴스 트리거 밝혔거든");
+                        //instantiateTrigger = false;
+
+                    }
+                    else
+                    {
+                        Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
+                        //instantiateTrigger = false;
+                    }
+                }
+
+                RoomRenewal();
+
+            }
 
         }
 
@@ -119,77 +135,81 @@ namespace SBF.Network
         {
             //if (PV.IsMine)
             //{
-            if(Input.GetKeyDown(KeyCode.Return))
-            {
-                //if (chatInput.isFocused == true)
-                //{
-                //    Send();
-                //    //chatInput.ActivateInputField();
-                //    //chatInput.DeactivateInputField(false);
-                    
-                //    //chatInput.Select();
-                //    //Debug.Log("들어가긴 하니?");
 
-                //}
-                //else if (chatInput.isFocused == false)
-                //{
+            if (SceneManager.GetActiveScene().name == "Room")
+            {
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    //if (chatInput.isFocused == true)
+                    //{
+                    //    Send();
+                    //    //chatInput.ActivateInputField();
+                    //    //chatInput.DeactivateInputField(false);
+
+                    //    //chatInput.Select();
+                    //    //Debug.Log("들어가긴 하니?");
+
+                    //}
+                    //else if (chatInput.isFocused == false)
+                    //{
                     Send();
                     chatInput.Select();
-                EventSystem.current.SetSelectedGameObject(null);
+                    EventSystem.current.SetSelectedGameObject(null);
+                    //}
+
+                }
+                if (PlayerController.LocalPlayerInstance != null && chatInput != null)
+                {
+                    PlayerController.LocalPlayerInstance.GetComponent<PlayerController>().isChat = chatInput.isFocused;
+                }
+                //}
+                //if (SceneManager.GetActiveScene().name != "Room for 2")
+                //{
+                //    return;
+                //}
+                //if (instantiateTrigger) /*&& SceneManager.GetActiveScene().name == "Room for 2"*/
+                //{
+                //    //여기서 부터는 매칭 이후에 작동해야 하는 상황임
+                //    if (playerPrefab == null)
+                //    { // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
+
+                //        Debug.LogError("<Color=Red><b>Missing</b></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
+                //    }
+                //    else
+                //    {
+                //        if (PlayerController.LocalPlayerInstance == null)
+                //        {
+                //            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+
+                //            // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+                //            PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 1f, 0f), Quaternion.identity, 0);
+                //            Debug.LogError("인스턴스 트리거 밝혔거든");
+                //            instantiateTrigger = false;
+
+                //        }
+                //        else
+                //        {
+                //            Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
+                //            instantiateTrigger = false;
+                //        }
+                //    }
+                //}
                 //}
 
+                //이건 매칭이 끝나고 방에 들어와서 모든 플레이어가 자리에 준비중일때 시작할 수 있음
+                //if (SceneManager.GetActiveScene().name == "Room for 2" && /*roomCloseTrigger &&*/ (PhotonNetwork.CurrentRoom.IsOpen || PhotonNetwork.CurrentRoom.IsVisible))
+                //{
+                //    Debug.Log("방 닫았음;");
+                //    PhotonNetwork.CurrentRoom.IsOpen = false;
+                //    PhotonNetwork.CurrentRoom.IsVisible = false;
+                //    //roomCloseTrigger = false;
+                //}
+
+                //if (PhotonNetwork.CurrentRoom.IsOpen == false && PhotonNetwork.CurrentRoom.IsVisible == false)
+                //{
+                //    Debug.Log("나 제대로 닫았다니께");
+                //}
             }
-            if (PlayerController.LocalPlayerInstance != null)
-            {
-                PlayerController.LocalPlayerInstance.GetComponent<PlayerController>().isChat = chatInput.isFocused;
-            }
-            //}
-            //if (SceneManager.GetActiveScene().name != "Room for 2")
-            //{
-            //    return;
-            //}
-            //if (instantiateTrigger) /*&& SceneManager.GetActiveScene().name == "Room for 2"*/
-            //{
-            //    //여기서 부터는 매칭 이후에 작동해야 하는 상황임
-            //    if (playerPrefab == null)
-            //    { // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
-
-            //        Debug.LogError("<Color=Red><b>Missing</b></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
-            //    }
-            //    else
-            //    {
-            //        if (PlayerController.LocalPlayerInstance == null)
-            //        {
-            //            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-
-            //            // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-            //            PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 1f, 0f), Quaternion.identity, 0);
-            //            Debug.LogError("인스턴스 트리거 밝혔거든");
-            //            instantiateTrigger = false;
-
-            //        }
-            //        else
-            //        {
-            //            Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
-            //            instantiateTrigger = false;
-            //        }
-            //    }
-            //}
-            //}
-
-            //이건 매칭이 끝나고 방에 들어와서 모든 플레이어가 자리에 준비중일때 시작할 수 있음
-            //if (SceneManager.GetActiveScene().name == "Room for 2" && /*roomCloseTrigger &&*/ (PhotonNetwork.CurrentRoom.IsOpen || PhotonNetwork.CurrentRoom.IsVisible))
-            //{
-            //    Debug.Log("방 닫았음;");
-            //    PhotonNetwork.CurrentRoom.IsOpen = false;
-            //    PhotonNetwork.CurrentRoom.IsVisible = false;
-            //    //roomCloseTrigger = false;
-            //}
-
-            //if (PhotonNetwork.CurrentRoom.IsOpen == false && PhotonNetwork.CurrentRoom.IsVisible == false)
-            //{
-            //    Debug.Log("나 제대로 닫았다니께");
-            //}
         }
 
 
@@ -216,10 +236,12 @@ namespace SBF.Network
             if (!PhotonNetwork.IsMasterClient)
             {
                 gameStartButton.gameObject.SetActive(false);
+                roomInfoFix.SetActive(false);
             }
             else
             {
                 gameStartButton.gameObject.SetActive(true);
+                roomInfoFix.SetActive(true);
             }
             //}
         }
@@ -245,10 +267,12 @@ namespace SBF.Network
             if (!PhotonNetwork.IsMasterClient)
             {
                 gameStartButton.gameObject.SetActive(false);
+                roomInfoFix.SetActive(false);
             }
             else
             {
                 gameStartButton.gameObject.SetActive(true);
+                roomInfoFix.SetActive(true);
             }
         }
 
@@ -262,9 +286,91 @@ namespace SBF.Network
         }
 
 
+
         #endregion
 
         #region Public Methods
+        public void GameStart()
+        {
+            if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
+            {
+                PV.RPC("ChatRPC", RpcTarget.All, "잠시 후 게임을 시작합니다.");
+                PhotonNetwork.CurrentRoom.IsOpen = false;
+                //PhotonNetwork.CurrentRoom.IsVisible = false;
+                PhotonNetwork.LoadLevel("MainGameScene");
+            }
+            else
+            {
+                PV.RPC("ChatRPC", RpcTarget.All, "방 인원이 모자라 게임을 시작할 수 없습니다.");
+            }
+        }
+
+        public void RoomInfoChange(int num)
+        {
+            var maxPlayersPerRoom = PhotonNetwork.CurrentRoom.MaxPlayers;
+            if (num == 1)
+            {
+                if (maxPlayersPerRoom == 8)
+                {
+
+                }
+                else maxPlayersPerRoom++;
+                PhotonNetwork.CurrentRoom.MaxPlayers = maxPlayersPerRoom;
+                roomPlayerNumber.text = PhotonNetwork.CurrentRoom.MaxPlayers + "";
+                PV.RPC("ChatRPC", RpcTarget.All, "방 인원이 " + maxPlayersPerRoom + "으로 수정되었습니다.");
+            }
+            else if (num == -1)
+            {
+                if (maxPlayersPerRoom == 2)
+                {
+
+                }
+                else if (maxPlayersPerRoom == PhotonNetwork.CurrentRoom.PlayerCount)
+                {
+                    PV.RPC("ChatRPC", RpcTarget.All, "현재 인원보다 적은 수로 변경할 수 없습니다.");
+                }
+                else
+                {
+                    maxPlayersPerRoom--;
+                }
+                PhotonNetwork.CurrentRoom.MaxPlayers = maxPlayersPerRoom;
+                roomPlayerNumber.text = PhotonNetwork.CurrentRoom.MaxPlayers + "";
+                PV.RPC("ChatRPC", RpcTarget.All, "방 인원이 " + maxPlayersPerRoom + "으로 수정되었습니다.");
+
+            }
+            if (num == 2)
+            {
+                if(PhotonNetwork.CurrentRoom.IsOpen)
+                {
+                    PV.RPC("ChatRPC", RpcTarget.All, "방이 잠겼습니다."); 
+                    PhotonNetwork.CurrentRoom.IsOpen = false;
+                }
+                else
+                {
+                    PV.RPC("ChatRPC", RpcTarget.All, "방이 열렸습니다."); 
+                    PhotonNetwork.CurrentRoom.IsOpen = true;
+                }
+            }
+
+
+            
+            if (maxPlayersPerRoom == 8)
+            {
+                roomPlayerNumbernextButton.interactable = false;
+            }
+            else if (maxPlayersPerRoom == 2)
+            {
+                roomPlayerNumberprevButton.interactable = false;
+            }
+            else
+            {
+                roomPlayerNumbernextButton.interactable = true;
+                roomPlayerNumberprevButton.interactable = true;
+            }
+            Debug.Log(maxPlayersPerRoom);
+
+            PV.RPC("RoomRenewalRPC", RpcTarget.All);
+        }
 
         public void RoomRenewal()
         {
@@ -274,6 +380,36 @@ namespace SBF.Network
             //}
             roomNameText.text = PhotonNetwork.CurrentRoom.Name;
             roomPlayerCountText.text = PhotonNetwork.CurrentRoom.PlayerCount + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
+
+            roomPlayerNumber.text = PhotonNetwork.CurrentRoom.MaxPlayers + "";
+
+            if (PhotonNetwork.CurrentRoom.IsOpen)
+            {
+                roomLock.gameObject.SetActive(false);
+                roomUnlock.gameObject.SetActive(true);
+            }
+            else
+            {
+                roomLock.gameObject.SetActive(true);
+                roomUnlock.gameObject.SetActive(false);
+            }
+        }
+
+        [PunRPC]
+        public void RoomRenewalRPC()
+        {
+            roomNameText.text = PhotonNetwork.CurrentRoom.Name;
+            roomPlayerCountText.text = PhotonNetwork.CurrentRoom.PlayerCount + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
+            if (PhotonNetwork.CurrentRoom.IsOpen)
+            {
+                roomLock.gameObject.SetActive(false);
+                roomUnlock.gameObject.SetActive(true);
+            }
+            else
+            {
+                roomLock.gameObject.SetActive(true);
+                roomUnlock.gameObject.SetActive(false);
+            }
         }
 
         public void Send()

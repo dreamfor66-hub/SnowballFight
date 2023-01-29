@@ -41,6 +41,8 @@ namespace SBF.Network
         public int cur_haircolorkey;
         public int cur_eyescolorkey;
 
+        
+
         public TMP_Text skinText;
         public TMP_Text hairText;
         public TMP_Text facehairText;
@@ -50,12 +52,17 @@ namespace SBF.Network
         public Image hairColorbar;
         public Image eyesColorbar;
 
+        public TMP_Text roomPlayerNumber;
+        public Button roomPlayerNumberprevButton;
+        public Button roomPlayerNumbernextButton;
+
         public Animator anim;
 
         public Hashtable playerCP;
 
         //public int animkey;
 
+        public GameObject roomPanel;
         public GameObject noRoomNoticePanel;
 
         List<RoomInfo> localList = new List<RoomInfo>();
@@ -93,7 +100,7 @@ namespace SBF.Network
             if (SceneManager.GetActiveScene().name == "Lobby")
             {
                 isConnecting = true;
-                OnConnectedToMaster();
+                //OnConnectedToMaster();
                 PhotonNetwork.SendRate = 60;
                 PhotonNetwork.SerializationRate = 30;
 
@@ -118,6 +125,7 @@ namespace SBF.Network
                 //cur_pantskey = 0;
                 //cur_backkey = 0;
                 TextChange();
+                RoomInfoChange(0);
             }
         }
 
@@ -127,7 +135,24 @@ namespace SBF.Network
             //{
              PlayerCountCheck();
             //}
+
         }
+
+        //private void FixedUpdate()
+        //{
+        //    if (SceneManager.GetActiveScene().name == "Lobby")
+        //    {
+
+        //        var roomCount = PhotonNetwork.CountOfRooms;
+
+        //        if (roomCount != PhotonNetwork.CountOfRooms)
+        //        {
+
+
+        //        }
+        //    }
+
+        //}
 
         public override void OnConnectedToMaster()
         {
@@ -218,25 +243,27 @@ namespace SBF.Network
             //}
         }
 
+        
+
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
             int roomCount = roomList.Count;
-            if (PhotonNetwork.CountOfRooms == 0)
-            {
-                foreach (Button btns in rooms)
-                {
-                    btns.gameObject.SetActive(false);
-                }
-                noRoomNoticePanel.SetActive(true);
-            }
-            else
-            {
-                foreach (Button btns in rooms)
-                {
-                    btns.gameObject.SetActive(true);
-                }
-                noRoomNoticePanel.SetActive(false);
-            }
+            //if (roomCount >= 1)
+            //{
+            //    foreach (Button btns in rooms)
+            //    {
+            //        btns.gameObject.SetActive(true);
+            //    }
+            //    noRoomNoticePanel.SetActive(false);
+            //}
+            //else if (roomCount == 0)
+            //{
+            //    foreach (Button btns in rooms)
+            //    {
+            //        btns.gameObject.SetActive(false);
+            //    }
+            //    noRoomNoticePanel.SetActive(true);
+            //}
             for (int i = 0; i < roomCount; i++)
             {
                 if (!roomList[i].RemovedFromList)
@@ -322,6 +349,43 @@ namespace SBF.Network
             }
             else PhotonNetwork.JoinRoom(localList[multiple + num].Name);
             LocalListRenewal();
+        }
+
+        public void RoomInfoChange(int num)
+        {
+            if (num == 1)
+            {
+                if (maxPlayersPerRoom == 8)
+                {
+
+                }
+                else maxPlayersPerRoom++;
+            }
+            else if (num == -1)
+            {
+                if (maxPlayersPerRoom == 2)
+                {
+
+                }
+                else maxPlayersPerRoom--;
+
+            }
+
+            roomPlayerNumber.text = string.Format("" + maxPlayersPerRoom + "");
+            if (maxPlayersPerRoom == 8)
+            {
+                roomPlayerNumbernextButton.interactable = false;
+            }
+            else if (maxPlayersPerRoom == 2)
+            {
+                roomPlayerNumberprevButton.interactable = false;
+            }
+            else
+            {
+                roomPlayerNumbernextButton.interactable = true;
+                roomPlayerNumberprevButton.interactable = true;
+            }
+            Debug.Log(maxPlayersPerRoom);
         }
 
         public void LocalListRenewal()
