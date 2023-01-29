@@ -200,26 +200,22 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
                     
             }
 
-            if (die)
-            {
-                if (dieTrigger)
-                {
-                    Die();
-                    dieTrigger = false;
-                }
-            }
-            else
+            
+            if (!die)
             {
                 if (PV.IsMine)
                 {
                     ArrowRotation();
-                    StatusCheck();
+                    PV.RPC("StatusCheck",RpcTarget.AllBufferedViaServer);
                     if (!isDash && !isChat)
                     {
-                        LookRotCheck();
                         MoveInputCheck();
-                        AttackInputCheck();
+                        LookRotCheck();
                         DashInputCheck();
+                        if (SceneManager.GetActiveScene().name != ("Room"))
+                        {
+                            AttackInputCheck();
+                        }
                     }
                 }
             }
@@ -231,6 +227,14 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
             {
                 if (SceneManager.GetActiveScene().name != "Room for 1")
                 {
+                    if (die)
+                    {
+                        if (dieTrigger)
+                        {
+                            PV.RPC("Die", RpcTarget.AllBufferedViaServer);
+                            dieTrigger = false;
+                        }
+                    }
                     if (!isDash && !isChat)
                     {
                         Move();
@@ -356,7 +360,8 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
                
 
                 //GameObject addObject = (GameObject)Instantiate(moveData.VfxPreFabs, playerBody.transform.position // 이 포맷을 따른다
-                GameObject bullet = (GameObject)Instantiate(charData.AttackPrefs, bulletPos.transform.position, Quaternion.Euler(rotDir));
+                //GameObject bullet = (GameObject)Instantiate(charData.AttackPrefs, bulletPos.transform.position, Quaternion.Euler(rotDir));
+                GameObject bullet = (GameObject)Instantiate(charData.AttackPrefs, transform.position + (rotDir.normalized * 0.1f), Quaternion.Euler(rotDir));
                 //bullet.transform.position = bulletPos.transform.position;
                 //bullet.transform.position += rotDir * 10f * Time.deltaTime; // 한번만 이동시키는 코드였네;
 
@@ -411,6 +416,7 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
 
         }
 
+        [PunRPC]
         void StatusCheck()
         {
             
@@ -440,6 +446,8 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
 
         }
 
+
+        [PunRPC]
         void Die()
         {
             animator.SetTrigger("Die");

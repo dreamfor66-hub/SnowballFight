@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CharData
   m_EditorClassIdentifier: 
   MaxHp: 100
-  MoveSpd: 7.5
+  MoveSpd: 6.5
   DashCooldown: 3
   DashSpd: 11
   DashDur: 0.7

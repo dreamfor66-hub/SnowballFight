@@ -1,6 +1,7 @@
 using System.Collections;
 
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
@@ -40,6 +41,8 @@ namespace SBF.Network
         public TMP_Text[] chatText;
         public TMP_InputField chatInput;
 
+        public Button gameStartButton;
+
         [SerializeField] PhotonView PV;
         public Hashtable playerCP;
 
@@ -59,7 +62,14 @@ namespace SBF.Network
         {
             Instance = this;
             
-
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                gameStartButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                gameStartButton.gameObject.SetActive(true);
+            }
             
             //NetworkManager.RoomRenewal();
             //instantiateTrigger = true;
@@ -203,7 +213,14 @@ namespace SBF.Network
                 //LoadArena();
                 //        loadAranaTrigger = false;
             }
-            
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                gameStartButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                gameStartButton.gameObject.SetActive(true);
+            }
             //}
         }
 
@@ -224,6 +241,14 @@ namespace SBF.Network
                 Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
 
                 //LoadArena();
+            }
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                gameStartButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                gameStartButton.gameObject.SetActive(true);
             }
         }
 
