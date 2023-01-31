@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 55104
+  controlID: 323
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 55068
+  controlID: 261
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 55047
+  controlID: 239
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -234,7 +234,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 2e4ceffff65fefff40c8effff4dcefff4addefffbc18f0ff7a51f0ff388af0ff14c1f0ffe0c3f0ff5ec7f0ff84c7f0ff9cfcf0ffce01f1ff700ff1ff3215f1ffde42f1ffde52f1ff1669f1ff2071f1ffb87cf1ff5a8af1fff8abf1ff00acf1ff62bcf1ffd6bef1ff10c1f1ff68e1f1ff20e4f1fffce7f1ff2e1ff2ffd42df2ff0c6ff2ffc2caf2ffc237f3ffd689f3ff68a6f3ffbea6f3ff34e2f3fff61af4ffb853f4ff9a8af4ff728df4fff490f4ff1e91f4ff8093f4ff1ecdf4ffe601f5ff3a02f5ffb03df5ff7276f5ff54adf5ff2cb0f5ffaeb3f5ffd8b3f5ff4eb4f5ff84b8f5ff76f3f5ff82f6f5ffdafaf5ff5c0df6ff6a28f6ff6ce9f6ffa4f6f6ff6e50f7ffb856f7ff0c57f7ff7e92f7ff3ccbf7ff1a02f8ffee04f8ff6c08f8ff9408f8ff8410f8ffe810f8ff421bf8ff8c3bf8ffe64ef8ff3a4ff8ffb08af8ff72c3f8ff54faf8ff2cfdf8ffb600f9ffe000f9ff7a01f9ff7c0bf9ffd00bf9ff4247f9ff0080f9ffdeb6f9ffb2b9f9ff38bdf9ff60bdf9ffacbff9ffacccf9ff00cdf9ff7208faff3041faff0e78faffe27afaff687efaff907efafff685faff7092faff7c9dfaffd09dfaff42d9faff0012fbffde48fbffb24bfbff384ffbff604ffbff1256fbff2659fbff6a8efbffc28efbffd294fbff2895fbff9ad0fbff5809fcff3640fcff0a43fcff8446fcffaa46fcff227dfcff00affcff8cf8fcffa4f8fcffaaf8fcffb0f8fcffb6f8fcffc8f8fcff7e01fdff3256fdff8856fdfffe91fdffc0cafdffa201feff7a04feff0c08feff3608feff9a23feff3a27feffd842fefff849feff964bfeff7e4ffeffa640fffffc40ffff727cffff34b5ffff16ecffffeceeffff7ef2ffffa8f2ffff22fbffff5ab30200fac0020012400400d64004000ab104000eb1040018f10400f0f1040090f50400be0406004805060096050600fa0506008e0806009a6e0600726f060064ab060092ac060084b10600fc1407009c1507002a16070004190700201b0700be690700966a0700926d070036ae0700c0ae07000eaf070058af07004eb00700d4b0070052b107000ab20700d4b20700c6b3070050b407009eb40700e8b40700deb5070064b60700e2b607009ab7070064b80700965e08006e5f080052650800dc6508002a6608003e670800f067080026690800ce690800dc8d0900b48e0900f4c7090084da0b00e4de0b0028e70b00a0e70b0062bb0c00a8c00c0004c40c00a6c50c000eca0c00d8d20c00c8750d000e7b0d000c800d0074840d0010870d00c4b40d009eba0d001cc00d00e0c40d0048ce0d000e8f0e00b6920e008c940e0050990e00c2a70e00c6a70e00e4e90e002aef0e0028f40e0090f80e00ea32120052371200
+      m_ExpandedIDs: 
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -863,8 +863,8 @@ MonoBehaviour:
     y: 0
     width: 776
     height: 505
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 2}
   m_Panes:
   - {fileID: 2}
@@ -880,7 +880,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: ConsoleWindow
+  m_Name: ProjectBrowser
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -889,15 +889,15 @@ MonoBehaviour:
     y: 505
     width: 1521
     height: 442
-  m_MinSize: {x: 101, y: 121}
-  m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 14}
+  m_MinSize: {x: 231, y: 271}
+  m_MaxSize: {x: 10001, y: 10021}
+  m_ActualView: {fileID: 12}
   m_Panes:
   - {fileID: 12}
   - {fileID: 13}
   - {fileID: 14}
-  m_Selected: 2
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 2
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -939,21 +939,21 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes
+    - Assets/Script
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 61
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/Script
   m_LastFoldersGridSize: 61
   m_LastProjectPath: D:\Github\Snowball Fight
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 131}
-    m_SelectedIDs: be7a0000
-    m_LastClickedID: 31422
+    scrollPos: {x: 0, y: 95}
+    m_SelectedIDs: c07a0000
+    m_LastClickedID: 31424
     m_ExpandedIDs: 00000000ac7a000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0

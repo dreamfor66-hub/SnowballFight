@@ -34,6 +34,7 @@ namespace SBF.UI
         Transform targetTransform;
         Vector3 targetPosition;
 
+        [SerializeField]
         PlayerController target;
 
 
@@ -42,17 +43,17 @@ namespace SBF.UI
         #region MonoBehaviour CallBacks
         void Awake()
         {
-            this.transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>(), false);
+            this.transform.SetParent(GameObject.Find("UICanvas").GetComponent<Transform>(), false);
         }
 
         void Update()
         {
-            if (target == null)
-            {
-                Debug.Log("≈∏∞Ÿ ≥Œ¿”");
-                Destroy(this.gameObject);
-                return;
-            }
+            //if (target == null)
+            //{
+            //    Debug.Log("≈∏∞Ÿ ≥Œ¿”");
+            //    Destroy(this.gameObject);
+            //    return;
+            //}
             // Reflect the Player Health
             if (playerHealthSlider != null)
             {
@@ -95,10 +96,12 @@ namespace SBF.UI
             // Follow the Target GameObject on screen.
             if (target != null)
             {
+                
                 //targetPosition = targetTransform.position;
                 //targetPosition.y += characterControllerHeight;
                 if (target.cam != null)
                 {
+                    
                     transform.position = target.GetComponent<PlayerController>().cam.WorldToScreenPoint(target.gameObject.transform.position) + screenOffset;
                 }
             }

@@ -100,7 +100,8 @@ namespace SBF.Network
             if (SceneManager.GetActiveScene().name == "Lobby")
             {
                 isConnecting = true;
-                //OnConnectedToMaster();
+                PhotonNetwork.JoinLobby();
+                OnConnectedToMaster();
                 PhotonNetwork.SendRate = 60;
                 PhotonNetwork.SerializationRate = 30;
 
@@ -119,6 +120,10 @@ namespace SBF.Network
         {
             if (SceneManager.GetActiveScene().name == "Lobby")
             {
+                
+                Destroy(GameObject.Find("GameManager"));
+                Destroy(GameObject.Find("UICanvas"));
+                
                 //cur_hairkey = 0;
                 //cur_facehairkey = 0;
                 //cur_clothkey = 0;
@@ -237,15 +242,26 @@ namespace SBF.Network
             //SceneManager.LoadScene(1);
 
             
-
-            PhotonNetwork.LoadLevel("Room");
+            StartCoroutine(GoRoomBuffer());
+            
            
             //}
         }
 
-        
+        IEnumerator GoRoomBuffer()
+        {
+            var time = 1.5f;
 
-        public override void OnRoomListUpdate(List<RoomInfo> roomList)
+            while (time > 0)
+            {
+                yield return new WaitForFixedUpdate();
+
+                time -= Time.deltaTime;
+            }
+            PhotonNetwork.LoadLevel("Room");
+        }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
             int roomCount = roomList.Count;
             //if (roomCount >= 1)

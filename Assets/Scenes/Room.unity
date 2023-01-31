@@ -22771,19 +22771,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 431467523}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 631951908}
   - {fileID: 641036088}
-  m_Father: {fileID: 819677268}
+  m_Father: {fileID: 1645279522}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 50, y: 40}
+  m_AnchoredPosition: {x: 275, y: 133}
   m_SizeDelta: {x: 550, y: 70}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &431467525
@@ -39795,11 +39795,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5230817098699031731}
-  - {fileID: 1802520062}
-  - {fileID: 1927544075}
-  - {fileID: 838348360}
-  - {fileID: 431467524}
-  - {fileID: 1120462009}
+  - {fileID: 1645279522}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -40577,7 +40573,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 838348359}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -40585,12 +40581,12 @@ RectTransform:
   - {fileID: 1126326624}
   - {fileID: 747575409}
   - {fileID: 932108163}
-  m_Father: {fileID: 819677268}
+  m_Father: {fileID: 1645279522}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 50, y: 107}
+  m_AnchoredPosition: {x: 275, y: 200}
   m_SizeDelta: {x: 550, y: 400}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &838348361
@@ -54146,7 +54142,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1120462008}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -54156,12 +54152,12 @@ RectTransform:
   - {fileID: 923565981}
   - {fileID: 1749351964}
   - {fileID: 421530396}
-  m_Father: {fileID: 819677268}
+  m_Father: {fileID: 1645279522}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -19.550049, y: -29.579956}
+  m_AnchoredPosition: {x: -250, y: -100}
   m_SizeDelta: {x: 500, y: 200}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1120462010
@@ -78308,6 +78304,47 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1645279521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1645279522}
+  m_Layer: 5
+  m_Name: RoomScenePanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1645279522
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645279521}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1802520062}
+  - {fileID: 1927544075}
+  - {fileID: 838348360}
+  - {fileID: 431467524}
+  - {fileID: 1120462009}
+  m_Father: {fileID: 819677268}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 2.7249756, y: -11.289978}
+  m_SizeDelta: {x: 2375.45, y: 1243.42}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1645351491
 GameObject:
   m_ObjectHideFlags: 1
@@ -85214,19 +85251,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1802520061}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1945083281}
   - {fileID: 777933153}
-  m_Father: {fileID: 819677268}
+  m_Father: {fileID: 1645279522}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 225, y: -70.420044}
   m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1802520063
@@ -86965,6 +87002,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1840745548 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4459150763134132094, guid: 039b197d00fa5e44b90baffe3eb24852, type: 3}
+  m_PrefabInstance: {fileID: 5230817098699031729}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1841339851
 GameObject:
   m_ObjectHideFlags: 1
@@ -90011,19 +90053,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1927544074}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 927908619}
   - {fileID: 669127826}
-  m_Father: {fileID: 819677268}
+  m_Father: {fileID: 1645279522}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 120}
+  m_AnchoredPosition: {x: -2.7249756, y: 213}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1927544076
@@ -98451,7 +98493,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4459150763134132094, guid: 039b197d00fa5e44b90baffe3eb24852, type: 3}
       propertyPath: m_Name
-      value: UIPrefs
+      value: GameScenePanel
       objectReference: {fileID: 0}
     - target: {fileID: 4459150763134132094, guid: 039b197d00fa5e44b90baffe3eb24852, type: 3}
       propertyPath: m_IsActive
@@ -98611,6 +98653,14 @@ PrefabInstance:
       propertyPath: roomNameText
       value: 
       objectReference: {fileID: 166437510}
+    - target: {fileID: 8855100719385853978, guid: 796da13911c329347952c8bf445e1026, type: 3}
+      propertyPath: GameScenePanel
+      value: 
+      objectReference: {fileID: 1840745548}
+    - target: {fileID: 8855100719385853978, guid: 796da13911c329347952c8bf445e1026, type: 3}
+      propertyPath: RoomScenePanel
+      value: 
+      objectReference: {fileID: 1645279521}
     - target: {fileID: 8855100719385853978, guid: 796da13911c329347952c8bf445e1026, type: 3}
       propertyPath: roomLockToggle
       value: 

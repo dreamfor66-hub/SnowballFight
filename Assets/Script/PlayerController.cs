@@ -190,7 +190,8 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
             {
                 return;
             }
-            
+
+
             if (cam == null)
             {
                 cam = Camera.main;
@@ -203,10 +204,10 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
             
             if (!die)
             {
-                if (PV.IsMine)
+                if (PV.IsMine && PhotonNetwork.InRoom)
                 {
                     ArrowRotation();
-                    PV.RPC("StatusCheck",RpcTarget.AllBufferedViaServer);
+                    PV.RPC("StatusCheck",RpcTarget.AllBuffered);
                     if (!isDash && !isChat)
                     {
                         MoveInputCheck();
@@ -546,6 +547,38 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
             }
             localUI.GetComponent<PlayerUI>().chatbox.SetActive(false);
             localUI.GetComponent<PlayerUI>().namebox.SetActive(true);
+        }
+
+        public override void OnEnable()
+        {
+            // 씬 매니저의 sceneLoaded에 체인을 건다.
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        // 체인을 걸어서 이 함수는 매 씬마다 호출된다.
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            Debug.Log("OnSceneLoaded: " + scene.name);
+            Debug.Log(mode);
+            cam = Camera.main;
+            //카메라가 문제가 되는 것 같아 긁어옴
+            CameraWork _cameraWork = this.gameObject.GetComponent<CameraWork>();
+            if (_cameraWork != null)
+            {
+                if (PV.IsMine)
+                {
+                    _cameraWork.OnStartFollowing();
+                }
+            }
+            else
+            {
+                Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component on playerPrefab.", this);
+            }
+        }
+
+        public override void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
         }
     }
 }

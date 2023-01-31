@@ -36,6 +36,9 @@ namespace SBF.Network
         public int local_haircolorkey;
         public int local_eyescolorkey;
 
+        public GameObject RoomScenePanel;
+        public GameObject GameScenePanel;
+
         public TMP_Text listText;
         public TMP_Text roomNameText;
         public TMP_Text roomPlayerCountText;
@@ -73,6 +76,9 @@ namespace SBF.Network
             
             if (SceneManager.GetActiveScene().name == "Room")
             {
+                DontDestroyOnLoad(this.gameObject);
+                DontDestroyOnLoad(GameObject.Find("UICanvas"));
+                
                 if (!PhotonNetwork.IsMasterClient)
                 {
                     gameStartButton.gameObject.SetActive(false);
@@ -123,7 +129,9 @@ namespace SBF.Network
                     }
                 }
 
-                RoomRenewal();
+                RoomRenewal ();
+
+                
 
             }
 
@@ -453,7 +461,6 @@ namespace SBF.Network
             PhotonNetwork.LeaveRoom();
             PhotonNetwork.JoinLobby();
         }
-
         void LoadArena()
         {
             //앞으로 LoadArena는 "게임시작"과 같은 기능을 하도록 한다.
@@ -483,5 +490,34 @@ namespace SBF.Network
         #endregion
 
 
+        public override void OnEnable()
+        {
+            // 씬 매니저의 sceneLoaded에 체인을 건다.
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        // 체인을 걸어서 이 함수는 매 씬마다 호출된다.
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            Debug.Log("OnSceneLoaded: " + scene.name);
+            Debug.Log(mode);
+            if (scene.name == "Room")
+            {
+                RoomScenePanel.SetActive(true);
+                GameScenePanel.SetActive(false);
+            }
+            else if (scene.name == "MainGameScene")
+            {
+                RoomScenePanel.SetActive(false);
+                GameScenePanel.SetActive(true);
+            }
+        }
+
+        public override void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
     }
+
 }
