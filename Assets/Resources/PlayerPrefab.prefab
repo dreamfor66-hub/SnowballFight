@@ -228,6 +228,7 @@ MonoBehaviour:
   localUI: {fileID: 0}
   bulletPos: {fileID: 2076254961910719595}
   charData: {fileID: 11400000, guid: 92b6a71a200241041b2012dcbb26a35c, type: 2}
+  curItem: {fileID: 0}
   curHealth: 0
   die: 0
   isChat: 0

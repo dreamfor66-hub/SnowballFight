@@ -47,14 +47,22 @@ namespace SBF
         [SerializeField]Transform bulletPos;
         Animator animator;
         [SerializeField] public CharacterData charData;
+        public ItemData curItem;
+
+        public GameObject curBasic => charData.AttackPrefs;
+        public GameObject curSkill => curItem.AttackPrefs;
+
         float maxHealth => charData.MaxHp;
         [HideInInspector] public float curHealth;
         public bool die = false;
         bool dieTrigger = true;
         bool attackTrigger = true;
         bool attackHold;
+        bool skillTrigger = true;
+        bool skillHold;
         bool dashTrigger = true;
         bool isDash = false;
+        bool hasItem = false;
 
         public bool isChat = false;
         
@@ -97,7 +105,6 @@ namespace SBF
             // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
             DontDestroyOnLoad(this.gameObject);
 
-            
 
             die = false;
             attackTrigger = true;
@@ -236,14 +243,18 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
                             dieTrigger = false;
                         }
                     }
-                    if (!isDash && !isChat)
+                    else //notDie
                     {
-                        Move();
-                    }
-                    else if (!isDash && isChat)
-                    {
-                        animator.ResetTrigger("Move");
-                        animator.SetTrigger("Idle");
+                        GetItemCheck();
+                        if (!isDash && !isChat)
+                        {
+                            Move();
+                        }
+                        else if (!isDash && isChat)
+                        {
+                            animator.ResetTrigger("Move");
+                            animator.SetTrigger("Idle");
+                        }
                     }
                 }
             }
@@ -276,12 +287,19 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
             StartCoroutine(Dash(charData.DashDur));
         }
 
+        void GetItemCheck()
+        {
+        
+        }
+
+        [PunRPC]
+        void GetItem()
+        {
+
+        }
+
         void AttackInputCheck()
         {
-            //if (Input.GetKeyDown(KeyCode.Mouse0))
-            //{
-            //    Attack();
-            //}
             if (attackHold)
             {
                 if(attackTrigger)
@@ -302,7 +320,33 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
             {
                 attackHold = false;
             }
+
+            if (curItem != null)
+            {
+                if (skillHold)
+                {
+                    if (skillTrigger)
+                    {
+                        StartCoroutine(SkillCooldown(curItem.AttackCooldown));
+
+                        Vector3 point = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+                        Vector3 rotDir = new Vector3((point - transform.position).x, pointArrow.position.y, (point - transform.position).z);
+
+                        PV.RPC("Skill", RpcTarget.All, rotDir);
+                    }
+                }
+                if (Input.GetKeyDown(KeyCode.Mouse1))
+                {
+                    skillHold = true;
+                }
+                if (Input.GetKeyUp(KeyCode.Mouse1))
+                {
+                    skillHold = false;
+                }
+            }
         }
+
+        
 
         IEnumerator AttackCooldown(float value)
         {
@@ -316,6 +360,20 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
                 time -= Time.deltaTime;
             }
             attackTrigger = true;
+        }
+
+        IEnumerator SkillCooldown(float value)
+        {
+            var time = value;
+
+            while (time > 0)
+            {
+                skillTrigger = false;
+                yield return new WaitForFixedUpdate();
+
+                time -= Time.deltaTime;
+            }
+            skillTrigger = true;
         }
 
         IEnumerator DashCooldown(float value)
@@ -363,6 +421,28 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
                 //GameObject addObject = (GameObject)Instantiate(moveData.VfxPreFabs, playerBody.transform.position // 이 포맷을 따른다
                 //GameObject bullet = (GameObject)Instantiate(charData.AttackPrefs, bulletPos.transform.position, Quaternion.Euler(rotDir));
                 GameObject bullet = (GameObject)Instantiate(charData.AttackPrefs, transform.position + (rotDir.normalized * 0.1f), Quaternion.Euler(rotDir));
+                //bullet.transform.position = bulletPos.transform.position;
+                //bullet.transform.position += rotDir * 10f * Time.deltaTime; // 한번만 이동시키는 코드였네;
+
+                bullet.GetComponent<BulletObject>().owner = gameObject;
+                bullet.GetComponent<BulletObject>().shootAngle = new Vector3(rotDir.x, 0, rotDir.z).normalized;
+            }
+        }
+
+        [PunRPC]
+        void Skill(Vector3 rotDir)
+        {
+            if (cam == null)
+            {
+                Debug.Log("스킬 쓰려는 시도는 했는데, cam이 null이라 발사하지 못했음");
+            }
+            if (cam != null)
+            {
+                Debug.Log("정상적으로 쏘고 있음");
+
+                //GameObject addObject = (GameObject)Instantiate(moveData.VfxPreFabs, playerBody.transform.position // 이 포맷을 따른다
+                //GameObject bullet = (GameObject)Instantiate(charData.AttackPrefs, bulletPos.transform.position, Quaternion.Euler(rotDir));
+                GameObject bullet = (GameObject)Instantiate(curItem.AttackPrefs, transform.position + (rotDir.normalized * 0.1f), Quaternion.Euler(rotDir));
                 //bullet.transform.position = bulletPos.transform.position;
                 //bullet.transform.position += rotDir * 10f * Time.deltaTime; // 한번만 이동시키는 코드였네;
 
@@ -480,33 +560,33 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
             //    return;
             //}
 
-            if (!other.GetComponentInParent<BulletObject>())
+            if (other.GetComponentInParent<BulletObject>())
             {
-                return;
+                var bulletobj = other.GetComponentInParent<BulletObject>();
+
+                if (bulletobj.owner == null)
+                {
+                    return;
+                }
+
+                else if (bulletobj.owner == this.transform.root.gameObject)
+                {
+                    return;
+                }
+
+                if (bulletobj != null)
+                {
+                    curHealth -= 10;
+                    Debug.Log(curHealth);
+                    Destroy(bulletobj.transform.root.gameObject);
+                }
             }
-            var bulletobj = other.GetComponentInParent<BulletObject>();
+            
 
-            if (bulletobj.owner == null)
+            else if (other.GetComponentInParent<ItemObject>())
             {
-                return;
-            }
-
-            else if (bulletobj.owner == this.transform.root.gameObject)
-            {
-                return;
-            }
-
-            if (bulletobj != null)
-            {
-                curHealth -= 10;
-                Debug.Log(curHealth);
-                Destroy(bulletobj.transform.root.gameObject);
-            }
-
-
-            else
-            {
-
+                curItem = other.GetComponentInParent<ItemObject>().data;
+                Destroy(other.transform.root.gameObject);
             }
             
 
