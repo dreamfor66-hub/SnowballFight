@@ -26,5 +26,6 @@ public class CharacterData : ScriptableObject
     public float AttackCooldown;
     public float AttackSpd;
     public float AttackDur;
+    public float AttackDmg;
 
 }

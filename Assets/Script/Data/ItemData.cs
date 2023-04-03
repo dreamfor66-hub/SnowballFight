@@ -4,9 +4,8 @@ using UnityEngine;
 
 public enum ItemType
 {
-    Throw,
-    Spawn,
-    
+    OneCount,
+    Pierce,
 }
 
 [CreateAssetMenu(fileName = "new ItemData", menuName = "Data/Item")]
@@ -27,4 +26,6 @@ public class ItemData : ScriptableObject
     public float AttackCooldown;
     public float AttackSpd;
     public float AttackDur;
+    public float AttackDmg;
+
 }

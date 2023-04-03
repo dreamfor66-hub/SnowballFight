@@ -9,6 +9,8 @@ namespace SBF
     {
         [HideInInspector] public GameObject owner;
         float bulletDur;
+        public float bulletDmg;
+        public ItemType bulletType;
         float bulletSpd;
         List<Collider> HC = new List<Collider>();
         [HideInInspector] public Vector3 shootAngle;

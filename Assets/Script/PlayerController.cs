@@ -424,8 +424,12 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
                 //bullet.transform.position = bulletPos.transform.position;
                 //bullet.transform.position += rotDir * 10f * Time.deltaTime; // 한번만 이동시키는 코드였네;
 
-                bullet.GetComponent<BulletObject>().owner = gameObject;
-                bullet.GetComponent<BulletObject>().shootAngle = new Vector3(rotDir.x, 0, rotDir.z).normalized;
+                var bulletObj = bullet.GetComponent<BulletObject>();
+
+                bulletObj.owner = gameObject;
+                bulletObj.shootAngle = new Vector3(rotDir.x, 0, rotDir.z).normalized;
+                bulletObj.bulletDmg = charData.AttackDmg;
+                bulletObj.bulletType = curItem.ItemType;
             }
         }
 
@@ -446,8 +450,12 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
                 //bullet.transform.position = bulletPos.transform.position;
                 //bullet.transform.position += rotDir * 10f * Time.deltaTime; // 한번만 이동시키는 코드였네;
 
-                bullet.GetComponent<BulletObject>().owner = gameObject;
-                bullet.GetComponent<BulletObject>().shootAngle = new Vector3(rotDir.x, 0, rotDir.z).normalized;
+                var bulletObj = bullet.GetComponent<BulletObject>();
+
+                bulletObj.owner = gameObject;
+                bulletObj.shootAngle = new Vector3(rotDir.x, 0, rotDir.z).normalized;
+                bulletObj.bulletDmg = curItem.AttackDmg;
+                bulletObj.bulletType = curItem.ItemType;
             }
         }
 
@@ -576,9 +584,10 @@ UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
 
                 if (bulletobj != null)
                 {
-                    curHealth -= 10;
+                    curHealth -= bulletobj.bulletDmg;
                     Debug.Log(curHealth);
-                    Destroy(bulletobj.transform.root.gameObject);
+                    if (bulletobj.bulletType == ItemType.OneCount)
+                        Destroy(bulletobj.transform.root.gameObject);
                 }
             }
             
