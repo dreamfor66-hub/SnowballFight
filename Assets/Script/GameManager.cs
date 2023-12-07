@@ -386,6 +386,10 @@ namespace SBF.Network
             //{
             //    listText.text += PhotonNetwork.PlayerList[i].NickName + ((i + 1 == PhotonNetwork.PlayerList.Length) ? "" : ", ");
             //}
+            if (PhotonNetwork.CurrentRoom == null)
+            {
+                return;
+            }
             roomNameText.text = PhotonNetwork.CurrentRoom.Name;
             roomPlayerCountText.text = PhotonNetwork.CurrentRoom.PlayerCount + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
 
@@ -460,6 +464,7 @@ namespace SBF.Network
         {
             PhotonNetwork.LeaveRoom();
             PhotonNetwork.JoinLobby();
+            PhotonNetwork.LoadLevel("Lobby");
         }
         void LoadArena()
         {

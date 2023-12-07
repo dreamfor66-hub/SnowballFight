@@ -189,16 +189,17 @@ namespace SBF
                 cur_faceHair.color = usableColorList[NM.cur_haircolorkey];
                 cur_eyesLeft.color = usableColorList[NM.cur_eyescolorkey];
                 cur_eyesRight.color = usableColorList[NM.cur_eyescolorkey];
+            
+                PlayerPrefs.SetInt("saved_skinkey", NM.cur_skinkey);
+                PlayerPrefs.SetInt("saved_hairkey", NM.cur_hairkey);
+                PlayerPrefs.SetInt("saved_facehairkey", NM.cur_facehairkey);
+                PlayerPrefs.SetInt("saved_clothkey", NM.cur_clothkey);
+                PlayerPrefs.SetInt("saved_pantskey", NM.cur_pantskey);
+                PlayerPrefs.SetInt("saved_backkey", NM.cur_backkey);
+                PlayerPrefs.SetInt("saved_haircolorkey", NM.cur_haircolorkey);
+                PlayerPrefs.SetInt("saved_eyescolorkey", NM.cur_eyescolorkey);
             }
 
-            PlayerPrefs.SetInt("saved_skinkey", NM.cur_skinkey);
-            PlayerPrefs.SetInt("saved_hairkey", NM.cur_hairkey);
-            PlayerPrefs.SetInt("saved_facehairkey", NM.cur_facehairkey);
-            PlayerPrefs.SetInt("saved_clothkey", NM.cur_clothkey);
-            PlayerPrefs.SetInt("saved_pantskey", NM.cur_pantskey);
-            PlayerPrefs.SetInt("saved_backkey", NM.cur_backkey);
-            PlayerPrefs.SetInt("saved_haircolorkey", NM.cur_haircolorkey);
-            PlayerPrefs.SetInt("saved_eyescolorkey", NM.cur_eyescolorkey);
 
 
             //Debug.Log(PlayerPrefs.GetInt("saved_hairkey"));
